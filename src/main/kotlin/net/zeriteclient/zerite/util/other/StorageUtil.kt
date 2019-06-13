@@ -6,7 +6,7 @@ import java.io.File
 object StorageUtil {
 
     fun getDataFile(name: String): File {
-        val dataDir = File(Launch.minecraftHome, "Zerite")
+        val dataDir = File(Launch.minecraftHome, "zerite")
         dataDir.mkdirs()
         return File(dataDir, name)
     }
