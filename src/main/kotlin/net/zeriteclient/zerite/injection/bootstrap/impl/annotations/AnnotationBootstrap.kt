@@ -2,6 +2,8 @@ package net.zeriteclient.zerite.injection.bootstrap.impl.annotations
 
 import net.zeriteclient.zerite.event.EventBus
 import net.zeriteclient.zerite.injection.bootstrap.AbstractBootstrap
+import net.zeriteclient.zerite.injection.bootstrap.ZeriteBootstrap
+import net.zeriteclient.zerite.injection.bootstrap.impl.configuration.ConfigBootstrap
 import net.zeriteclient.zerite.util.other.ReflectionUtil
 import org.apache.logging.log4j.LogManager
 import java.lang.reflect.Field
@@ -21,6 +23,10 @@ class AnnotationBootstrap : AbstractBootstrap() {
 
             if (annotation.registerEvents) {
                 EventBus.register(obj)
+            }
+
+            if (annotation.registerConfig) {
+                ZeriteBootstrap.getBootstrap<ConfigBootstrap>().register(obj)
             }
 
             field.declaringClass.fields.forEach { f: Field ->

@@ -23,6 +23,11 @@ class ConfigBootstrap : AbstractBootstrap() {
 
     fun register(obj: Any) {
         registeredObjects.add(obj)
+
+        val bufferedReader = BufferedReader(FileReader(configFile))
+        val jsonObject = gson.fromJson(bufferedReader, JsonObject::class.java) ?: return
+
+        loadObject(jsonObject, obj)
     }
 
     private fun save() {
@@ -52,18 +57,22 @@ class ConfigBootstrap : AbstractBootstrap() {
         val bufferedReader = BufferedReader(FileReader(configFile))
         val jsonObject = gson.fromJson(bufferedReader, JsonObject::class.java) ?: return
 
-        for (o in registeredObjects) {
-            val clazz = o.javaClass
+        registeredObjects.forEach {
+            loadObject(jsonObject, it)
+        }
+    }
 
-            if (!jsonObject.has(clazz.name)) return
+    private fun loadObject(jsonObject: JsonObject, obj: Any) {
+        val clazz = obj.javaClass
 
-            val classObject = jsonObject.getAsJsonObject(clazz.name)
+        if (!jsonObject.has(clazz.name)) return
 
-            for (f in clazz.declaredFields) {
-                if (f.isAnnotationPresent(StoreConfig::class.java) && classObject.has(f.name)) {
-                    f.isAccessible = true
-                    f.set(o, gson.fromJson(classObject.get(f.name), TypeToken.get(f.genericType).type))
-                }
+        val classObject = jsonObject.getAsJsonObject(clazz.name)
+
+        for (f in clazz.declaredFields) {
+            if (f.isAnnotationPresent(StoreConfig::class.java) && classObject.has(f.name)) {
+                f.isAccessible = true
+                f.set(obj, gson.fromJson(classObject.get(f.name), TypeToken.get(f.genericType).type))
             }
         }
     }

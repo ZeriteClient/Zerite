@@ -2,7 +2,7 @@ package net.zeriteclient.zerite.injection.bootstrap
 
 object ZeriteBootstrap {
 
-    private val bootstrapList: ArrayList<AbstractBootstrap> = arrayListOf()
+    val bootstrapList: ArrayList<AbstractBootstrap> = arrayListOf()
 
     fun beginGameCreate() {
         bootstrapList.addAll(DiscovererBootstrap.bootstraps)
@@ -12,7 +12,10 @@ object ZeriteBootstrap {
     fun beginClientInit() = bootstrapList.forEach(AbstractBootstrap::bootstrapClientInit)
     fun beginClientShutdown() = bootstrapList.forEach(AbstractBootstrap::bootstrapClientShutdown)
 
-    fun <T : AbstractBootstrap> getBootstrap(target: Class<out AbstractBootstrap>): T? =
-        bootstrapList.first { it.javaClass == target } as T
+    inline fun <reified T : AbstractBootstrap> getBootstrap(): T =
+        bootstrapList.first { it.javaClass == T::class.java } as T
+
+    fun <T : AbstractBootstrap> getBootstrap(clazz: Class<T>): T =
+        bootstrapList.first { it.javaClass == clazz } as T
 
 }
