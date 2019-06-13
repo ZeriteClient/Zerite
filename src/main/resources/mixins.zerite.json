@@ -1,0 +1,16 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "net.zeriteclient.zerite.injection.mixins",
+  "refmap": "refmap.mixins.zerite.json",
+  "required": true,
+  "mixins": [
+    "client.entity.MixinEntityPlayerSP",
+
+    "client.gui.MixinGuiIngame",
+
+    "client.network.MixinNetHandlerPlayClient",
+
+    "client.MixinClientBrandRetriever",
+    "client.MixinMinecraft"
+  ]
+}

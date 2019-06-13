@@ -91,7 +91,7 @@ object SplashRenderer {
         GlStateManager.translate(0.0, translateOffset, 0.0)
 
         // Define values
-        val maxSize = 5.0
+        val maxSize = 6.0
 
         // GL options
         GlStateManager.enableTexture2D()

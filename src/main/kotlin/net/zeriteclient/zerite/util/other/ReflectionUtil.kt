@@ -5,6 +5,7 @@ import net.zeriteclient.zerite.injection.bootstrap.DiscovererBootstrap
 import org.reflections.Reflections
 import org.reflections.scanners.FieldAnnotationsScanner
 import org.reflections.util.ConfigurationBuilder
+import java.lang.reflect.Field
 import kotlin.streams.toList
 
 object ReflectionUtil {
@@ -24,5 +25,34 @@ object ReflectionUtil {
 
             return field
         }
+
+    /**
+     * Gets a field based on multiple names
+     *
+     * @param clazz [Class] The class to search through
+     * @param fieldNames [String[]] The field names
+     * @return [Field] The returned field
+     */
+    fun getField(clazz: Class<*>, fieldNames: Array<String>): Field? {
+        // Iterate field names
+        for (name in fieldNames) {
+            try {
+                // Get field
+                val f = clazz.getDeclaredField(name)
+
+                // Check if not null
+                if (f != null) {
+                    // Set accessible and return
+                    f.isAccessible = true
+                    return f
+                }
+            } catch (ignored: NoSuchFieldException) {
+            }
+
+        }
+
+        // Return fallback
+        return null
+    }
 
 }

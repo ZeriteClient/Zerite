@@ -3,6 +3,8 @@ package net.zeriteclient .zerite.injection.stages.tweaker
 import net.minecraft.launchwrapper.ITweaker
 import net.minecraft.launchwrapper.LaunchClassLoader
 import net.zeriteclient.zerite.injection.bootstrap.DiscovererBootstrap
+import org.spongepowered.asm.launch.MixinBootstrap
+import org.spongepowered.asm.mixin.Mixins
 import java.io.File
 
 class ZeriteTweaker : ITweaker {
@@ -24,11 +26,9 @@ class ZeriteTweaker : ITweaker {
         classLoader!!.addClassLoaderExclusion("net.zeriteclient.zerite.injection.bootstrap.DiscovererBootstrap")
         classLoader.addClassLoaderExclusion("net.zeriteclient.zerite.injection.bootstrap.AbstractBootstrap")
         classLoader.addTransformerExclusion("net.zeriteclient.zerite.injection.bootstrap.")
-        classLoader.addTransformerExclusion("net.zeriteclient.zerite.injection.asm.transformers.")
-        classLoader.addTransformerExclusion("net.zeriteclient.zerite.injection.asm.ZeriteClassTransformer")
-        classLoader.addTransformerExclusion("net.zeriteclient.zerite.injection.mixin.")
 
-        classLoader.registerTransformer("net.zeriteclient.zerite.injection.asm.ZeriteClassTransformer")
+        MixinBootstrap.init()
+        Mixins.addConfiguration("mixins.zerite.json")
 
         DiscovererBootstrap.bootstrap()
     }

@@ -29,6 +29,8 @@ object EventBus {
 
         subscribers.sortByDescending(EventSubscriber::priority)
         registeredEventClasses.replace(obj.javaClass, subscribers)
+
+        println(registeredEventClasses)
     }
 
     fun post(event: Event) {

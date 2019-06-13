@@ -8,7 +8,7 @@ import java.net.URL
 import java.net.URLClassLoader
 
 object DiscovererBootstrap {
-    internal val bootstraps: List<AbstractBootstrap> = mutableListOf()
+    val bootstraps: ArrayList<AbstractBootstrap> = arrayListOf()
     var injectClassLoader: URLClassLoader? = null
         private set
 
@@ -25,7 +25,6 @@ object DiscovererBootstrap {
             if (!file.isFile || !file.name.toLowerCase().endsWith(".jar")) continue
 
             logger.info("Discovered bootstrap file: ${file.name}")
-
             injectUrls.add(file.toURI().toURL())
         }
 
@@ -35,7 +34,7 @@ object DiscovererBootstrap {
 
         for (clazz in ReflectionUtil.reflections!!.getSubTypesOf(AbstractBootstrap::class.java)) {
             logger.info("Discovered bootstrap class: ${clazz.name}")
-            bootstraps.plus(clazz.newInstance())
+            bootstraps.add(clazz.newInstance())
         }
 
         bootstraps.forEach(AbstractBootstrap::bootstrapTweaker)

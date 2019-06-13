@@ -12,4 +12,7 @@ object ZeriteBootstrap {
     fun beginClientInit() = bootstrapList.forEach(AbstractBootstrap::bootstrapClientInit)
     fun beginClientShutdown() = bootstrapList.forEach(AbstractBootstrap::bootstrapClientShutdown)
 
+    fun <T : AbstractBootstrap> getBootstrap(target: Class<out AbstractBootstrap>): T? =
+        bootstrapList.first { it.javaClass == target } as T
+
 }
