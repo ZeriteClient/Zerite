@@ -14,12 +14,8 @@ class KeyBindBootstrap : AbstractBootstrap() {
         val persistence = KeyBindObject.keyCodes
 
         // Get binds
-        for (bind in keyBinds) {
-            // Check if present
-            if (persistence.containsKey(bind.keyDescription)) {
-                // Update
-                bind.keyCode = persistence[bind.keyDescription] ?: continue
-            }
+        keyBinds.filter { persistence.containsKey(it.keyDescription) }.forEach {
+            it.keyCode = persistence[it.keyDescription] ?: return@forEach
         }
 
         // Get current key binds
@@ -33,9 +29,9 @@ class KeyBindBootstrap : AbstractBootstrap() {
     }
 
     override fun bootstrapClientShutdown() {
-        for (bind in keyBinds) {
-            KeyBindObject.keyCodes.putIfAbsent(bind.keyDescription, bind.keyCode)
-            KeyBindObject.keyCodes.replace(bind.keyDescription, bind.keyCode)
+        keyBinds.forEach {
+            KeyBindObject.keyCodes.putIfAbsent(it.keyDescription, it.keyCode)
+            KeyBindObject.keyCodes.replace(it.keyDescription, it.keyCode)
         }
     }
 }

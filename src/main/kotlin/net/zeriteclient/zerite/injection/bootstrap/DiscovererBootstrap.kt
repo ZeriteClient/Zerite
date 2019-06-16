@@ -21,20 +21,18 @@ object DiscovererBootstrap {
 
         val injectUrls = mutableListOf<URL>()
 
-        for (file in bootstrapDir.listFiles()) {
-            if (!file.isFile || !file.name.toLowerCase().endsWith(".jar")) continue
-
-            logger.info("Discovered bootstrap file: ${file.name}")
-            injectUrls.add(file.toURI().toURL())
+        bootstrapDir.listFiles().filter { it.isFile && it.name.endsWith(".jar", true) }.forEach {
+            logger.info("Discovered bootstrap file: ${it.name}")
+            injectUrls.add(it.toURI().toURL())
         }
 
         injectClassLoader = URLClassLoader(injectUrls.toTypedArray(), classLoader)
 
         logger.info("Discovering bootstraps")
 
-        for (clazz in ReflectionUtil.reflections!!.getSubTypesOf(AbstractBootstrap::class.java)) {
-            logger.info("Discovered bootstrap class: ${clazz.name}")
-            bootstraps.add(clazz.newInstance())
+        ReflectionUtil.reflections!!.getSubTypesOf(AbstractBootstrap::class.java).forEach {
+            logger.info("Discovered bootstrap class: ${it.name}")
+            bootstraps.add(it.newInstance())
         }
 
         bootstraps.forEach(AbstractBootstrap::bootstrapTweaker)

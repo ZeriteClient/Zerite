@@ -22,6 +22,8 @@ class ConfigBootstrap : AbstractBootstrap() {
     override fun bootstrapClientShutdown() = save()
 
     fun register(obj: Any) {
+        configFile!!.createNewFile()
+
         registeredObjects.add(obj)
 
         val bufferedReader = BufferedReader(FileReader(configFile))
@@ -33,15 +35,13 @@ class ConfigBootstrap : AbstractBootstrap() {
     private fun save() {
         val saveObject = JsonObject()
 
-        for (o in registeredObjects) {
+        registeredObjects.forEach { o ->
             val clazz = o.javaClass
             val classObject = JsonObject()
 
-            for (f in clazz.declaredFields) {
-                if (f.getAnnotation(StoreConfig::class.java) != null) {
-                    f.isAccessible = true
-                    classObject.add(f.name, gson.toJsonTree(f.get(o), f.type))
-                }
+            clazz.declaredFields.filter { it.getAnnotation(StoreConfig::class.java) != null }.forEach {
+                it.isAccessible = true
+                classObject.add(it.name, gson.toJsonTree(it.get(o), it.type))
             }
 
             saveObject.add(clazz.name, classObject)
@@ -69,11 +69,10 @@ class ConfigBootstrap : AbstractBootstrap() {
 
         val classObject = jsonObject.getAsJsonObject(clazz.name)
 
-        for (f in clazz.declaredFields) {
-            if (f.isAnnotationPresent(StoreConfig::class.java) && classObject.has(f.name)) {
-                f.isAccessible = true
-                f.set(obj, gson.fromJson(classObject.get(f.name), TypeToken.get(f.genericType).type))
+        clazz.declaredFields.filter { it.isAnnotationPresent(StoreConfig::class.java) && classObject.has(it.name) }
+            .forEach {
+                it.isAccessible = true
+                it.set(obj, gson.fromJson(classObject.get(it.name), TypeToken.get(it.genericType).type))
             }
-        }
     }
 }

@@ -11,18 +11,18 @@ object EventBus {
 
         val subscribers: ArrayList<EventSubscriber> = registeredEventClasses[obj.javaClass] ?: ArrayList()
 
-        for (method in obj.javaClass.declaredMethods) {
-            if (method.getDeclaredAnnotation(Subscribe::class.java) == null || method.parameterCount != 1) {
-                continue
+        obj.javaClass.declaredMethods.forEach {
+            if (it.getDeclaredAnnotation(Subscribe::class.java) == null || it.parameterCount != 1) {
+                return@forEach
             }
 
-            method.isAccessible = true
+            it.isAccessible = true
             subscribers.add(
                 EventSubscriber(
                     obj,
-                    method,
-                    method.parameterTypes[0],
-                    method.getDeclaredAnnotation(Subscribe::class.java).priority
+                    it,
+                    it.parameterTypes[0],
+                    it.getDeclaredAnnotation(Subscribe::class.java).priority
                 )
             )
         }
@@ -40,8 +40,8 @@ object EventBus {
                 .toList())
         }
 
-        for (subscriber in subscribers) {
-            subscriber.method.invoke(subscriber.obj, event)
+        subscribers.forEach {
+            it.method.invoke(it.obj, event)
         }
     }
 

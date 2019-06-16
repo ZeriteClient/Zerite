@@ -1,4 +1,4 @@
-package net.zeriteclient.zerite.game.font
+package net.zeriteclient.zerite.game.tools.font
 
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumChatFormatting
@@ -129,7 +129,7 @@ class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFa
         return font.getHeight(text) / 4 * antiAliasingFactor
     }
 
-    private fun getWidth(text: String): Int {
+    fun getWidth(text: String): Int {
         return font.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / antiAliasingFactor
     }
 }

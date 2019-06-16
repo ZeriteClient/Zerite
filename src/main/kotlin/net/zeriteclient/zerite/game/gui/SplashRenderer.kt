@@ -6,9 +6,8 @@ import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.texture.TextureManager
 import net.minecraft.client.shader.Framebuffer
-import net.zeriteclient.zerite.game.font.ZeriteFonts
+import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.util.EnumBackground
-import net.zeriteclient.zerite.util.rendering.EasingUtil
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import java.awt.Color
 

@@ -24,17 +24,17 @@ object KeyBindObject {
         }
 
         // Get the key bind bootstrap
-        val bootstrap = ZeriteBootstrap.getBootstrap<KeyBindBootstrap>(KeyBindBootstrap::class.java)
+        val bootstrap = ZeriteBootstrap.getBootstrap<KeyBindBootstrap>()
 
         // Loop through binds
-        for (keyBind in bootstrap.keyBinds) {
+        bootstrap.keyBinds.forEach {
             // Get key code and press status
-            val key = keyBind.keyCode
+            val key = it.keyCode
             val pressed = Keyboard.isKeyDown(key)
 
             // Fire held if pressed
             if (pressed) {
-                keyBind.onHeld()
+                it.onHeld()
             }
 
             // Put if absent
@@ -45,11 +45,11 @@ object KeyBindObject {
 
             if (!keyBool && pressed) {
                 // Fire press event
-                keyBind.onPressed()
+                it.onPressed()
                 keyPressStatusMap.replace(key, true)
             } else if (!pressed && keyBool) {
                 // Fire release event
-                keyBind.onReleased()
+                it.onReleased()
                 keyPressStatusMap.replace(key, false)
             }
         }

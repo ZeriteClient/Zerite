@@ -1,4 +1,4 @@
-package net.zeriteclient.zerite.game.font
+package net.zeriteclient.zerite.game.tools.font
 
 import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.Instance
 import java.awt.Font

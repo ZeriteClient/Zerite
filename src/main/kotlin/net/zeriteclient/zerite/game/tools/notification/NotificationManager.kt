@@ -1,0 +1,165 @@
+package net.zeriteclient.zerite.game.tools.notification
+
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.Gui
+import net.minecraft.client.renderer.GlStateManager
+import net.zeriteclient.zerite.event.RenderGameOverlayEvent
+import net.zeriteclient.zerite.event.Subscribe
+import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
+import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.Instance
+import net.zeriteclient.zerite.util.other.StringUtil
+import net.zeriteclient.zerite.util.other.TimeUtil
+import net.zeriteclient.zerite.util.rendering.EasingUtil
+import net.zeriteclient.zerite.util.rendering.ShapeUtil
+import org.lwjgl.opengl.GL11
+
+@Instance(registerEvents = true)
+object NotificationManager {
+
+    private val notificationList: ArrayList<Notification> = arrayListOf()
+    private var deltaY: Double = 0.0
+    private var lastMovement: Long = System.currentTimeMillis()
+    private var lastYTotal: Double = 0.0
+
+    @Subscribe
+    private fun onRenderGameOverlay(e: RenderGameOverlayEvent) {
+        val delta = TimeUtil.delta / 20.0
+        val regularFont = ZeriteFonts.regular
+
+        deltaY = Math.min(
+            lastYTotal, deltaY - EasingUtil.easeOut(
+                System.currentTimeMillis().toFloat(), 0.0f,
+                (delta / 20 * (deltaY + 10)).toFloat(),
+                (lastMovement + 1000).toFloat()
+            ).toDouble()
+        )
+
+        var yCount = e.scaledResolution.scaledHeight_double - 5 - deltaY
+
+        if (yCount < 0) {
+            yCount = e.scaledResolution.scaledHeight_double
+            deltaY = 0.0
+        }
+
+        notificationList.removeIf {
+            val splits = StringUtil.splitWithMaxLength(it.text, 20)
+
+            var width = 6
+            var height = 6
+            var maxWidth = 0
+
+            splits.forEach { text ->
+                if (regularFont.getWidth(text) > maxWidth) {
+                    maxWidth = regularFont.getWidth(text)
+                }
+
+                height += regularFont.getHeight(text)
+            }
+
+            width += maxWidth + height
+
+            yCount += -height - 5.0
+
+            var x = e.scaledResolution.scaledWidth - width - 6.0
+            var y = yCount
+
+            if (it.xMod == -1.0) {
+                it.xMod = width * 2.0
+            }
+
+            // Check if easing in
+            if (it.addTime + it.duration > System.currentTimeMillis()
+            ) {
+                // Ease in
+                it.xMod = Math.max(
+                    0.0,
+                    it.xMod - EasingUtil.easeOut(
+                        System.currentTimeMillis().toFloat(),
+                        0.0f,
+                        (delta / 10 * (it.xMod - (width / height / 2.0))).toFloat(),
+                        it.addTime + 1000.0f
+                    )
+                )
+            } else {
+                // Ease out
+                it.yMod = it.yMod - EasingUtil.easeOut(
+                    System.currentTimeMillis().toFloat(),
+                    0.0f,
+                    (delta / 10 * (it.yMod + height * 2)).toFloat(),
+                    it.addTime - it.duration + 1000.0f
+                )
+            }
+
+            x += it.xMod
+            y -= it.yMod
+
+            if (y > e.scaledResolution.scaledHeight_double) {
+                // Apply and remove
+                deltaY += height + 5
+                lastMovement = System.currentTimeMillis()
+                return@removeIf true
+            }
+
+            // Render the rectangle
+            ShapeUtil.drawFilledRoundedRectangle(
+                x.toInt(),
+                y.toInt(),
+                width,
+                height,
+                3,
+                if (it.dark) -0xdededf else -0x1
+            )
+            ShapeUtil.drawRoundedRectangle(x.toInt(), y.toInt(), width, height, 3, 2.0f, it.color)
+
+            // Bind no texture
+            GlStateManager.bindTexture(0)
+
+            // Bind the icon
+            Minecraft.getMinecraft().textureManager.bindTexture(it.icon)
+
+            // Check if dark
+            val darkColor: Float = if (it.dark) 1.0f else 0.1f
+
+            // Apply
+            GL11.glColor4f(darkColor, darkColor, darkColor, 1f)
+
+            // Draw icon
+            Gui.drawModalRectWithCustomSizedTexture(
+                x.toInt() + 2, y.toInt() + 2, 0f, 0f,
+                height - 4,
+                height - 4, (height - 4).toFloat(), (height - 4).toFloat()
+            )
+
+            // Set text modification
+            var textModify = 1
+
+            // Loop through splits
+            splits.forEach { text ->
+                // Render
+                regularFont.drawCenteredString(
+                    text,
+                    (x + height / 2 + (width - 8) / 2).toInt(),
+                    (y + textModify + regularFont.getHeight(text) / 8f).toInt(),
+                    if (it.dark) -0x1 else -0xdededf
+                )
+
+                // Modify if needed
+                textModify += regularFont.getHeight(text)
+            }
+
+            false
+        }
+
+        // Reset GL
+        GlStateManager.enableTexture2D()
+        GL11.glColor4f(1f, 1f, 1f, 1f)
+
+        lastYTotal = yCount
+    }
+
+    /**
+     * Display a notification
+     */
+    fun displayNotification(n: Notification) = notificationList.add(n)
+
+}

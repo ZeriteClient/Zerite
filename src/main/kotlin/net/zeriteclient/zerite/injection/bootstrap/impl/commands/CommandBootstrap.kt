@@ -34,13 +34,9 @@ class CommandBootstrap : AbstractBootstrap() {
         val args: Array<String> =
             if (trim.isEmpty()) emptyArray() else trim.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-        for (c in commandList) {
-            for (alias in c.getInclusiveAliases()) {
-                if (command.equals(alias, ignoreCase = true)) {
-                    c.execute(args)
-                    e.cancelled = true
-                }
-            }
+        commandList.first { c -> c.getInclusiveAliases().any { it.equals(command, true) } }.let {
+            it.execute(args)
+            e.cancelled = true
         }
     }
 
