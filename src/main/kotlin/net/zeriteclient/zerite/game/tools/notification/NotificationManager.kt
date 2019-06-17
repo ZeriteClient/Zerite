@@ -9,6 +9,7 @@ import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.Instance
 import net.zeriteclient.zerite.util.other.StringUtil
 import net.zeriteclient.zerite.util.other.TimeUtil
+import net.zeriteclient.zerite.util.rendering.AnimationUtil
 import net.zeriteclient.zerite.util.rendering.EasingUtil
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import org.lwjgl.opengl.GL11
@@ -70,28 +71,14 @@ object NotificationManager {
             // Check if easing in
             if (it.addTime + it.duration > System.currentTimeMillis()
             ) {
-                // Ease in
-                it.xMod = Math.max(
-                    0.0,
-                    it.xMod - EasingUtil.easeOut(
-                        System.currentTimeMillis().toFloat(),
-                        0.0f,
-                        (delta / 10 * (it.xMod - (width / height / 2.0))).toFloat(),
-                        it.addTime + 1000.0f
-                    )
-                )
+                it.xMod = width * 2.0 - AnimationUtil.easeOut(0.0, width * 2.0, it.addTime, 1000.0)
             } else {
                 // Ease out
-                it.yMod = it.yMod - EasingUtil.easeOut(
-                    System.currentTimeMillis().toFloat(),
-                    0.0f,
-                    (delta / 10 * (it.yMod + height * 2)).toFloat(),
-                    it.addTime - it.duration + 1000.0f
-                )
+                it.yMod = AnimationUtil.easeOut(0.0, height * 2.0, it.addTime + it.duration, 1000.0)
             }
 
             x += it.xMod
-            y -= it.yMod
+            y += it.yMod
 
             if (y > e.scaledResolution.scaledHeight_double) {
                 // Apply and remove

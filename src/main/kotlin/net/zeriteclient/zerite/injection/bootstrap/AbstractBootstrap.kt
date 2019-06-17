@@ -1,6 +1,6 @@
 package net.zeriteclient.zerite.injection.bootstrap
 
-open class AbstractBootstrap {
+open class AbstractBootstrap(var priority: Int = 0) {
 
     open fun bootstrapTweaker() {}
     open fun bootstrapGameCreate() {}
