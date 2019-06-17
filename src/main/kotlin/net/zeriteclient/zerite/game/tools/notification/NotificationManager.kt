@@ -27,17 +27,15 @@ object NotificationManager {
         val delta = TimeUtil.delta / 20.0
         val regularFont = ZeriteFonts.regular
 
-        deltaY = Math.min(
-            lastYTotal, deltaY - EasingUtil.easeOut(
-                System.currentTimeMillis().toFloat(), 0.0f,
-                (delta / 20 * (deltaY + 10)).toFloat(),
-                (lastMovement + 1000).toFloat()
-            ).toDouble()
-        )
+        deltaY -= EasingUtil.easeOut(
+            System.currentTimeMillis().toFloat(), 0.0f,
+            (delta / 20 * (deltaY + 2)).toFloat(),
+            (lastMovement + 1000).toFloat()
+        ).toDouble()
 
-        var yCount = e.scaledResolution.scaledHeight_double - 5 - deltaY
+        var yCount: Double = e.scaledResolution.scaledHeight_double - 5 - deltaY
 
-        if (yCount < 0) {
+        if (yCount.isNaN()) {
             yCount = e.scaledResolution.scaledHeight_double
             deltaY = 0.0
         }
@@ -58,8 +56,7 @@ object NotificationManager {
             }
 
             width += maxWidth + height
-
-            yCount += -height - 5.0
+            yCount += -height - 5
 
             var x = e.scaledResolution.scaledWidth - width - 6.0
             var y = yCount
@@ -109,6 +106,10 @@ object NotificationManager {
 
             // Apply
             GL11.glColor4f(darkColor, darkColor, darkColor, 1f)
+
+            // GL options
+            GlStateManager.disableTexture2D()
+            GlStateManager.enableTexture2D()
 
             // Draw icon
             Gui.drawModalRectWithCustomSizedTexture(

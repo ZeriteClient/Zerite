@@ -64,6 +64,7 @@ dependencies {
 //    embed 'com.github.Sk1erLLC:AsmHelper:3a6b3cf467'
     embed 'com.github.FalseHonesty:reflections:21959e6e'
     embed group: 'org.slick2d', name: 'slick2d-core', version: '1.0.2'
+    embed 'com.github.fcannizzaro:material-colors:0.1.0'
 
     embed fileTree(dir: 'lib', include: '*.jar')
 }

@@ -2,6 +2,7 @@ package net.zeriteclient.zerite.game.tools.font
 
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumChatFormatting
+import net.zeriteclient.zerite.util.rendering.ColorUtil
 import org.lwjgl.opengl.GL11
 import org.newdawn.slick.UnicodeFont
 import org.newdawn.slick.font.effects.ColorEffect
@@ -36,7 +37,7 @@ class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFa
         }
     }
 
-    private fun drawString(text: String, x: Int, y: Int, color: Int, shadow: Boolean) {
+    fun drawString(text: String, x: Int, y: Int, color: Int, shadow: Boolean, chroma: Boolean = false) {
         val posX: Float = (x * antiAliasingFactor).toFloat()
         val posY: Float = (y * antiAliasingFactor).toFloat()
 
@@ -79,7 +80,7 @@ class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFa
                     currentX,
                     currentY,
                     charStr,
-                    org.newdawn.slick.Color(currentColor)
+                    org.newdawn.slick.Color(if (chroma) ColorUtil.rainbowColor((currentX - currentY) * 6).rgb else currentColor)
                 )
 
                 currentX += font.getWidth(charStr)
