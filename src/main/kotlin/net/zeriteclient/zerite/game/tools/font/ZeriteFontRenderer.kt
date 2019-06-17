@@ -59,19 +59,28 @@ class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFa
         GlStateManager.blendFunc(770, 771)
 
         var currentX: Float = posX
+        var currentY: Float = posY
         var currentColor = color
 
         for (i in 0 until chars.size) {
             val c = chars[i]
 
-            if (c != '\u00a7' && (i == 0 || i == chars.size - 1 || chars[i - 1] != '\u00a7')) {
+            if (c == '\n') {
+                currentY += getHeight(text) / 4
+                currentX = posX
+            } else if (c != '\u00a7' && (i == 0 || i == chars.size - 1 || chars[i - 1] != '\u00a7')) {
                 if (i > 0 && chars[i - 1] == '\u00a7' && i == chars.size - 1) {
                     continue
                 }
 
                 val charStr = Character.toString(c)
 
-                font.drawString(currentX, posY, charStr, org.newdawn.slick.Color(currentColor))
+                font.drawString(
+                    currentX,
+                    currentY,
+                    charStr,
+                    org.newdawn.slick.Color(currentColor)
+                )
 
                 currentX += font.getWidth(charStr)
             } else if (c == '\u00a7' && i != chars.size - 1) {
@@ -126,7 +135,7 @@ class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFa
     }
 
     fun getHeight(text: String): Int {
-        return font.getHeight(text) / 4 * antiAliasingFactor
+        return font.getHeight(text) / antiAliasingFactor
     }
 
     fun getWidth(text: String): Int {

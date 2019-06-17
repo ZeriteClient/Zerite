@@ -9,6 +9,7 @@ import net.zeriteclient.zerite.event.WorldLoadEvent
 import org.lwjgl.opengl.Display
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 
+
 object MixinMinecraftImpl {
 
     fun runGameLoop(ci: CallbackInfo) {
