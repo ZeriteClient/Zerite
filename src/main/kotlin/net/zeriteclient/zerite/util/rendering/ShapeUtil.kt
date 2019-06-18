@@ -64,7 +64,7 @@ object ShapeUtil {
      * @param segments [Integer] The amount of segments to divide by
      * @param color [Integer] The color
      */
-    private fun drawFilledCircle(x: Int, y: Int, radius: Int, segments: Int, color: Int) {
+    fun drawFilledCircle(x: Int, y: Int, radius: Int, segments: Int, color: Int) {
         // GL options
         preDraw()
 

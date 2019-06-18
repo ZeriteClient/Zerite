@@ -118,7 +118,7 @@ class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFa
         GlStateManager.disableTexture2D()
     }
 
-    private fun drawString(text: String, x: Int, y: Int, color: Int) {
+    fun drawString(text: String, x: Int, y: Int, color: Int) {
         drawString(text, x, y, color, false)
     }
 
