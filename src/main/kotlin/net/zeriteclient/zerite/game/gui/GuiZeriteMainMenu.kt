@@ -79,7 +79,6 @@ class GuiZeriteMainMenu : GuiScreen() {
         super.drawScreen(mouseX, mouseY, partialTicks)
 
         overlayOpacity = Math.max(0.0, overlayOpacity - Math.max(30.0, TimeUtil.delta / 20.0))
-        println(overlayOpacity)
         SplashRenderer.drawSplash(Minecraft.getMinecraft().textureManager, true, overlayOpacity.toInt())
     }
 

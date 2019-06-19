@@ -4,14 +4,12 @@
   "refmap": "refmap.mixins.zerite.json",
   "required": true,
   "mixins": [
+    "client.MixinClientBrandRetriever",
+    "client.MixinMinecraft",
     "client.entity.MixinEntityPlayerSP",
-
     "client.gui.MixinGuiButton",
     "client.gui.MixinGuiIngame",
-
     "client.network.MixinNetHandlerPlayClient",
-
-    "client.MixinClientBrandRetriever",
-    "client.MixinMinecraft"
+    "util.MixinScreenShotHelper"
   ]
 }
