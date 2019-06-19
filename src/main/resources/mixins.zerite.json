@@ -6,6 +6,7 @@
   "mixins": [
     "client.entity.MixinEntityPlayerSP",
 
+    "client.gui.MixinGuiButton",
     "client.gui.MixinGuiIngame",
 
     "client.network.MixinNetHandlerPlayClient",

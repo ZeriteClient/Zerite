@@ -27,6 +27,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.storage.ISaveFormat;
 import net.zeriteclient.zerite.event.*;
+import net.zeriteclient.zerite.game.gui.GuiZeriteMainMenu;
 import net.zeriteclient.zerite.game.gui.SplashRenderer;
 import net.zeriteclient.zerite.injection.bootstrap.AbstractBootstrap;
 import net.zeriteclient.zerite.injection.bootstrap.ZeriteBootstrap;
@@ -357,13 +358,13 @@ public abstract class MixinMinecraft {
             this.currentScreen.onGuiClosed();
         }
 
-        if (guiScreenIn == null && this.theWorld == null) {
-            guiScreenIn = new GuiMainMenu();
+        if ((guiScreenIn == null || guiScreenIn instanceof GuiMainMenu) && this.theWorld == null) {
+            guiScreenIn = new GuiZeriteMainMenu();
         } else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F) {
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof GuiMainMenu) {
+        if (guiScreenIn instanceof GuiZeriteMainMenu) {
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();
         }

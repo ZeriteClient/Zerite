@@ -25,7 +25,7 @@ class CommandBootstrap : AbstractBootstrap() {
     private fun onChatMessageSent(e: SendChatMessageEvent) {
         val message = e.message
 
-        if (!message.startsWith("/")) {
+        if (!message.startsWith("/") || message.length <= 1) {
             return
         }
 
@@ -34,7 +34,7 @@ class CommandBootstrap : AbstractBootstrap() {
         val args: Array<String> =
             if (trim.isEmpty()) emptyArray() else trim.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-        commandList.first { c -> c.getInclusiveAliases().any { it.equals(command, true) } }.let {
+        commandList.firstOrNull { c -> c.getInclusiveAliases().any { it.equals(command, true) } }?.let {
             it.execute(args)
             e.cancelled = true
         }

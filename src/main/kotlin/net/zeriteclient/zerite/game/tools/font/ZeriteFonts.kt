@@ -36,5 +36,11 @@ object ZeriteFonts {
             javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Bold.ttf")
         ), 24f, 2
     )
+    val titleLarge = ZeriteFontRenderer(
+        Font.createFont(
+            Font.TRUETYPE_FONT,
+            javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Bold.ttf")
+        ), 42f, 2
+    )
 
 }

@@ -11,7 +11,7 @@ import java.awt.Font
 import java.util.*
 
 
-class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFactor: Int) {
+class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasingFactor: Int) {
 
     private var font: UnicodeFont = UnicodeFont(fontImpl.deriveFont(size * antiAliasingFactor))
     private var colorCodes: IntArray
@@ -70,7 +70,7 @@ class ZeriteFontRenderer(fontImpl: Font, size: Float, private val antiAliasingFa
                 currentY += getHeight(text) / 4
                 currentX = posX
             } else if (c != '\u00a7' && (i == 0 || i == chars.size - 1 || chars[i - 1] != '\u00a7')) {
-                if (i > 0 && chars[i - 1] == '\u00a7' && i == chars.size - 1) {
+                if ((i > 0 && chars[i - 1] == '\u00a7' && i == chars.size - 1) || alpha == 0.0f) {
                     continue
                 }
 

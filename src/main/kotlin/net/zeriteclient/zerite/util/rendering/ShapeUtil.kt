@@ -1,6 +1,8 @@
 package net.zeriteclient.zerite.util.rendering
 
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.MathHelper
 import org.lwjgl.opengl.GL11
 
@@ -208,7 +210,7 @@ object ShapeUtil {
         color: Int
     ) {
         // GL options
-//        preDraw()
+        preDraw()
 
         // Bind the color
         bindColor(color)
@@ -229,7 +231,7 @@ object ShapeUtil {
         drawFilledArc((x + width - radius).toDouble(), (y + height - radius).toDouble(), radius, 50, 90f, 90f, color)
 
         // GL options
-//        postDraw()
+        postDraw()
     }
 
     fun drawRect(left: Int, top: Int, right: Int, bottom: Int, color: Int) {
@@ -353,6 +355,36 @@ object ShapeUtil {
 
         // GL options
         postDraw()
+    }
+
+    fun drawGradientRect(x: Double, y: Double, width: Double, height: Double, startColor: Int, endColor: Int) {
+        val f = (startColor shr 24 and 255).toFloat() / 255.0f
+        val f1 = (startColor shr 16 and 255).toFloat() / 255.0f
+        val f2 = (startColor shr 8 and 255).toFloat() / 255.0f
+        val f3 = (startColor and 255).toFloat() / 255.0f
+        val f4 = (endColor shr 24 and 255).toFloat() / 255.0f
+        val f5 = (endColor shr 16 and 255).toFloat() / 255.0f
+        val f6 = (endColor shr 8 and 255).toFloat() / 255.0f
+        val f7 = (endColor and 255).toFloat() / 255.0f
+
+        GlStateManager.disableTexture2D()
+        GlStateManager.enableBlend()
+        GlStateManager.disableAlpha()
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
+        GlStateManager.shadeModel(7425)
+        val tessellator = Tessellator.getInstance()
+        val worldrenderer = tessellator.worldRenderer
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR)
+        worldrenderer.pos(x + width, y, 0.0).color(f1, f2, f3, f).endVertex()
+        worldrenderer.pos(x, y, 0.0).color((f1 + f5) / 2, (f2 + f6) / 2, (f3 + f6) / 2, (f + f4) / 2).endVertex()
+        worldrenderer.pos(x, y + height, 0.0).color(f5, f6, f7, f4).endVertex()
+        worldrenderer.pos(x + width, y + height, 0.0).color((f1 + f5) / 2, (f2 + f6) / 2, (f3 + f6) / 2, (f + f4) / 2)
+            .endVertex()
+        tessellator.draw()
+        GlStateManager.shadeModel(7424)
+        GlStateManager.disableBlend()
+        GlStateManager.enableAlpha()
+        GlStateManager.enableTexture2D()
     }
 
 }

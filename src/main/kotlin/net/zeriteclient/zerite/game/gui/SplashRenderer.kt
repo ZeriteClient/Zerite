@@ -57,23 +57,34 @@ object SplashRenderer {
         GlStateManager.disableFog()
         GlStateManager.disableDepth()
         GlStateManager.enableTexture2D()
+        GlStateManager.enableBlend()
 
         // Get width and height
         val width = scaledResolution.scaledWidth
         val height = scaledResolution.scaledHeight
 
         // Bind the background texture and render it
+        GlStateManager.color(1.0f, 1.0f, 1.0f, opacity / 255.0f)
         tm.bindTexture(EnumBackground.BACKGROUND_1.location)
         Gui.drawModalRectWithCustomSizedTexture(0, 0, 0f, 0f, width, height, width.toFloat(), height.toFloat())
+
+        ShapeUtil.drawGradientRect(
+            0.0,
+            0.0,
+            width.toDouble(),
+            height.toDouble(),
+            Color(3, 169, 244, Math.max(0, opacity - 100)).rgb,
+            Color(2, 136, 209, opacity).rgb
+        )
 
         // Get medium font
         val mediumFont = ZeriteFonts.medium
 
         // Draw zerite text
         var s = "ZERITE"
-        ZeriteFonts.title.drawCenteredString(
+        ZeriteFonts.titleLarge.drawCenteredString(
             s, width / 2,
-            height / 2 - ZeriteFonts.title.getHeight(s) * 2,
+            height / 2 - 10 - (ZeriteFonts.titleLarge.getHeight(s) / 1.5).toInt(),
             Color(255, 255, 255, opacity).rgb
         )
 
@@ -81,39 +92,42 @@ object SplashRenderer {
         s = "Minecraft, refined."
         mediumFont.drawCenteredString(
             s, width / 2,
-            height / 2 - ZeriteFonts.title.getHeight(s) / 2,
+            height / 2 - 10 + ZeriteFonts.titleLarge.getHeight(s) / 4 + 5,
             Color(255, 255, 255, opacity).rgb
         )
 
         // Translate the screen
-        val translateOffset = (255 - opacity) / 255.0 * (height / 4.0)
-        GlStateManager.translate(0.0, translateOffset, 0.0)
+//        val translateOffset = (255 - opacity) / 255.0 * (height / 4.0)
+//        GlStateManager.translate(0.0, translateOffset, 0.0)
 
         // Define values
         val maxSize = 6.0
+        val whiteColor = Color(255, 255, 255, opacity).rgb
 
         // GL options
         GlStateManager.enableTexture2D()
 
         // Draw rectangles
-        ShapeUtil.drawFilledRoundedRectangle(
-            width / 6, (height * 0.8).toInt(), width / 6 * 4, 20, 3,
-            Color(255, 255, 255, opacity).rgb
-        )
-        ShapeUtil.drawFilledRoundedRectangle(
-            width / 6, (height * 0.8).toInt(),
-            (progress / maxSize * (width / 6 * 4)).toInt(), 20, 3,
-            Color(200, 200, 200, opacity).rgb
+        ShapeUtil.drawRectWithSize(0, height - 10, width, 10, whiteColor)
+        ShapeUtil.drawRectWithSize(
+            0,
+            height - 10,
+            (progress / maxSize * width).toInt(),
+            10,
+            Color(41,182,246, opacity).rgb
         )
 
-        mediumFont.drawCenteredString(
-            text, width / 2,
-            (height * 0.8 + mediumFont.getHeight(text) / 3).toInt(),
-            Color(0, 0, 0, opacity).rgb
-        )
+        s = "Stage 1"
+        mediumFont.drawString(s, 5, height - 15 - mediumFont.getHeight(s) * 2, whiteColor)
+
+        s = "Loading Minecraft"
+        ZeriteFonts.regular.drawString(s, 5, height - 15 - ZeriteFonts.regular.getHeight(s), whiteColor)
+
+        s = "${(progress / maxSize * 100).toInt()}% complete"
+        mediumFont.drawString(s, width - 5 - mediumFont.getWidth(s), height - 15 - mediumFont.getHeight(s), whiteColor)
 
         // Reverse the translation
-        GlStateManager.translate(0.0, -translateOffset, 0.0)
+//        GlStateManager.translate(0.0, -translateOffset, 0.0)
 
         // GL options
         GlStateManager.disableLighting()
