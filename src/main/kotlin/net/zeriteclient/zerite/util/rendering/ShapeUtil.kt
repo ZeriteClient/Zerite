@@ -42,7 +42,6 @@ object ShapeUtil {
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
         GlStateManager.blendFunc(770, 771)
-        GlStateManager.enableTexture2D()
         GlStateManager.disableTexture2D()
     }
 
@@ -55,6 +54,8 @@ object ShapeUtil {
 
         GlStateManager.popAttrib()
         GlStateManager.popMatrix()
+        GlStateManager.bindTexture(0)
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
     }
 
     /**
@@ -210,7 +211,7 @@ object ShapeUtil {
         color: Int
     ) {
         // GL options
-        preDraw()
+//        preDraw()
 
         // Bind the color
         bindColor(color)
@@ -231,7 +232,7 @@ object ShapeUtil {
         drawFilledArc((x + width - radius).toDouble(), (y + height - radius).toDouble(), radius, 50, 90f, 90f, color)
 
         // GL options
-        postDraw()
+//        postDraw()
     }
 
     fun drawRect(left: Int, top: Int, right: Int, bottom: Int, color: Int) {

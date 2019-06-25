@@ -1,6 +1,7 @@
 package net.zeriteclient.zerite.game.gui.settings
 
 import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
@@ -9,7 +10,10 @@ import net.zeriteclient.zerite.game.gui.settings.element.impl.SettingsButton
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingController
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingDropdown
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingGroup
+import net.zeriteclient.zerite.util.EnumBackground
+import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import org.lwjgl.input.Keyboard
+import java.awt.Color
 import java.io.IOException
 
 class GuiZeriteSettings : GuiScreen() {
@@ -51,8 +55,8 @@ class GuiZeriteSettings : GuiScreen() {
 
         this.buttonList.add(
             GuiButton(
-                1, scaledResolution.scaledWidth / 2 - 40,
-                scaledResolution.scaledHeight - 20, 80, 20, "Back"
+                1, scaledResolution.scaledWidth - 105,
+                scaledResolution.scaledHeight - 25, 80, 20, "Back"
             )
         )
     }
@@ -65,8 +69,21 @@ class GuiZeriteSettings : GuiScreen() {
      * @param partialTicks the world tick
      */
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        drawDefaultBackground()
-//        BackgroundUtils.drawBG()
+        if (Minecraft.getMinecraft().theWorld == null) {
+            EnumBackground.BACKGROUND_1.bind()
+            Gui.drawModalRectWithCustomSizedTexture(0, 0, 0.0f, 0.0f, width, height, width.toFloat(), height.toFloat())
+        } else {
+            ShapeUtil.drawRectWithSize(0, 0, width, height, Color(0, 0, 0, 100).rgb)
+        }
+
+        ShapeUtil.drawGradientRect(
+            0.0,
+            0.0,
+            width.toDouble(),
+            height.toDouble(),
+            Color(3, 169, 244, 20).rgb,
+            Color(2, 136, 209, 130).rgb
+        )
 
         controller.draw()
 

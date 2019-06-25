@@ -26,10 +26,12 @@ import net.minecraft.util.MouseHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.storage.ISaveFormat;
-import net.zeriteclient.zerite.event.*;
+import net.zeriteclient.zerite.event.ClientShutdownEvent;
+import net.zeriteclient.zerite.event.ClientStartEvent;
+import net.zeriteclient.zerite.event.EventBus;
+import net.zeriteclient.zerite.event.GuiDisplayEvent;
 import net.zeriteclient.zerite.game.gui.GuiZeriteMainMenu;
 import net.zeriteclient.zerite.game.gui.SplashRenderer;
-import net.zeriteclient.zerite.injection.bootstrap.AbstractBootstrap;
 import net.zeriteclient.zerite.injection.bootstrap.ZeriteBootstrap;
 import net.zeriteclient.zerite.injection.mixinsimp.client.MixinMinecraftImpl;
 import net.zeriteclient.zerite.injection.mixinsimp.client.StatStringFormatterImpl;
@@ -38,6 +40,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
+import org.lwjgl.opengl.PixelFormat;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -88,9 +91,6 @@ public abstract class MixinMinecraft {
 
     @Shadow
     protected abstract void setInitialDisplayMode() throws LWJGLException;
-
-    @Shadow
-    protected abstract void createDisplay() throws LWJGLException;
 
     @Shadow
     private Framebuffer framebufferMc;
@@ -180,17 +180,24 @@ public abstract class MixinMinecraft {
     @Shadow
     public abstract void toggleFullscreen();
 
-    @Shadow public GuiScreen currentScreen;
-    @Shadow public EntityPlayerSP thePlayer;
+    @Shadow
+    public GuiScreen currentScreen;
+    @Shadow
+    public EntityPlayerSP thePlayer;
 
-    @Shadow public abstract void setIngameNotInFocus();
+    @Shadow
+    public abstract void setIngameNotInFocus();
 
-    @Shadow public boolean skipRenderWorld;
+    @Shadow
+    public boolean skipRenderWorld;
 
-    @Shadow public abstract void setIngameFocus();
+    @Shadow
+    public abstract void setIngameFocus();
 
     @Shadow
     long systemTime;
+
+    @Shadow protected abstract void updateDisplayMode() throws LWJGLException;
 
     /**
      * @author Koding
@@ -213,6 +220,7 @@ public abstract class MixinMinecraft {
         OpenGlHelper.initializeTextures();
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
         this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
+
         this.registerMetadataSerializers();
         this.mcResourcePackRepository = new ResourcePackRepository(this.fileResourcepacks,
                 new File(this.mcDataDir, "server-resource-packs"), this.mcDefaultResourcePack,
@@ -333,6 +341,33 @@ public abstract class MixinMinecraft {
         }
 
         this.renderGlobal.makeEntityOutlineShader();
+    }
+
+    /**
+     * @author Koding
+     */
+    @Overwrite
+    private void createDisplay() throws LWJGLException {
+        Display.setResizable(true);
+        Display.setTitle("Zerite [INITIALIZING] | Beta B1");
+
+        try {
+            Display.create((new PixelFormat()).withDepthBits(24).withStencilBits(1));
+        } catch (LWJGLException lwjglexception) {
+            logger.error("Couldn\'t set pixel format", lwjglexception);
+
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException ignored) {
+
+            }
+
+            if (this.fullscreen) {
+                this.updateDisplayMode();
+            }
+
+            Display.create();
+        }
     }
 
     /**

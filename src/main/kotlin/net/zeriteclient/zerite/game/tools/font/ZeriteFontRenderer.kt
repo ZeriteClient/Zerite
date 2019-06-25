@@ -38,6 +38,8 @@ class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasi
     }
 
     fun drawString(text: String, x: Int, y: Int, color: Int, shadow: Boolean, chroma: Boolean = false) {
+        val textureEnabled = GL11.glIsEnabled(GL11.GL_TEXTURE_2D)
+
         val posX: Float = (x * antiAliasingFactor).toFloat()
         val posY: Float = (y * antiAliasingFactor).toFloat()
 
@@ -52,6 +54,13 @@ class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasi
 
         GlStateManager
             .scale(1f / antiAliasingFactor, 1f / antiAliasingFactor, 1f / antiAliasingFactor)
+
+        // TODO: Fix this
+//        GLUtil.begin {
+//            changeState(GL11.GL_TEXTURE_2D, false)
+//            changeState(GL11.GL_LIGHTING, false)
+//            changeState(GL11.GL_BLEND, true)
+//        }
 
         GlStateManager.disableTexture2D()
         GlStateManager.disableLighting()
@@ -115,7 +124,12 @@ class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasi
         )
         GL11.glColor4f(1f, 1f, 1f, 1f)
 
-        GlStateManager.disableTexture2D()
+        GlStateManager.bindTexture(0)
+
+        if (textureEnabled)
+            GlStateManager.enableTexture2D()
+
+//        GLUtil.end()
     }
 
     fun drawString(text: String, x: Int, y: Int, color: Int) {

@@ -13,7 +13,7 @@ class SettingDropdown(private val name: String, private val elements: ArrayList<
     fun draw() {
         val mediumSmallFont = ZeriteFonts.mediumSmall
 
-        ShapeUtil.drawRectWithSize(dimension.x, dimension.y, dimension.width, 20, Color(75, 75, 75, 127).rgb)
+        ShapeUtil.drawRectWithSize(dimension.x, dimension.y, dimension.width, 20, Color(255, 255, 255, 50).rgb)
         mediumSmallFont.drawString(name, dimension.x + 5, dimension.y + 5, -0x1)
 
         var xPos = dimension.x + 5

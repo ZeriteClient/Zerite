@@ -20,14 +20,24 @@ class SettingController(val groups: ArrayList<SettingGroup>, private var current
         val mediumSmallFont = ZeriteFonts.mediumSmall
         val titleFont = ZeriteFonts.title
 
-        ShapeUtil.drawRectWithSize(
-            0, 0, width / 4, height,
-            Color(65, 65, 65, 230).rgb
+//        ShapeUtil.drawRectWithSize(
+//            0, 0, width / 4, height,
+//            Color(65, 65, 65, 230).rgb
+//        )
+//        ShapeUtil.drawRectWithSize(
+//            0, 0, width / 4, 20,
+//            Color(0, 0, 0, 76).rgb
+//        )
+
+        ShapeUtil.drawGradientRect(
+            0.0,
+            0.0,
+            width / 4.0,
+            height.toDouble(),
+            Color(3, 169, 244, 100).rgb,
+            Color(2, 136, 209, 255).rgb
         )
-        ShapeUtil.drawRectWithSize(
-            0, 0, width / 4, 20,
-            Color(0, 0, 0, 76).rgb
-        )
+        ShapeUtil.drawRectWithSize(0, 0, width / 4, 20, Color(255, 255, 255, 50).rgb)
 
         mediumFont.drawString("Zerite", 5, 5, -0x1)
 
@@ -51,31 +61,39 @@ class SettingController(val groups: ArrayList<SettingGroup>, private var current
             }
         }
 
-        val rectX = width / 4 + 20
-        val rectY = 20
-        val rectWidth = width / 4 * 3 - 40
-        val rectHeight = height - 40
+        val rectX = width / 4 + 20.0
+        val rectY = 20.0
+        val rectWidth = width / 4 * 3 - 40.0
+        val rectHeight = height - 50.0
 
         if (currentGroup == null) {
-            ShapeUtil.drawFilledRoundedRectangle(
-                rectX, rectY, rectWidth, rectHeight,
-                5, Color(38, 38, 38, 255).rgb
+            ShapeUtil.drawGradientRect(
+                rectX,
+                rectY,
+                rectWidth,
+                rectHeight,
+                Color(3, 169, 244, 100).rgb,
+                Color(2, 136, 209, 255).rgb
             )
+//            ShapeUtil.drawFilledRoundedRectangle(
+//                rectX, rectY, rectWidth, rectHeight,
+//                5, Color(38, 38, 38, 255).rgb
+//            )
 
             titleFont.drawCenteredString(
                 "Well this is awkward!",
-                rectX + rectWidth / 2,
-                rectY + rectHeight / 2 - 20,
+                (rectX + rectWidth / 2).toInt(),
+                (rectY + rectHeight / 2 - 20).toInt(),
                 -0x1
             )
             mediumFont.drawCenteredString(
                 "You haven't selected a category.",
-                rectX + rectWidth / 2,
-                rectY + rectHeight / 2 + 10,
+                (rectX + rectWidth / 2).toInt(),
+                (rectY + rectHeight / 2 + 10).toInt(),
                 -0x1
             )
         } else {
-            currentGroup.dimension = RenderDimension(rectWidth, rectHeight + 20, rectX, 0)
+            currentGroup.dimension = RenderDimension(rectWidth.toInt(), (rectHeight + 20).toInt(), rectX.toInt(), 0)
             currentGroup.draw()
         }
     }
