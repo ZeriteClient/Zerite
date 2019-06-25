@@ -5,6 +5,7 @@
   "required": true,
   "mixins": [
     "client.MixinClientBrandRetriever",
+    "client.MixinLoadingScreenRenderer",
     "client.MixinMinecraft",
     "client.entity.MixinEntityPlayerSP",
     "client.gui.MixinGuiButton",

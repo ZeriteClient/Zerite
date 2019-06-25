@@ -30,7 +30,7 @@ class SendChatMessageEvent(val message: String) : CancellableEvent()
 
 class TickEvent : Event()
 
-class GuiDisplayEvent(val guiScreen: GuiScreen) : Event()
+class GuiDisplayEvent(val guiScreen: GuiScreen?) : Event()
 
 class RenderTickEvent(val scaledResolution: ScaledResolution) : Event()
 

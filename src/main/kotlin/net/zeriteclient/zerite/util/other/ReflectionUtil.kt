@@ -6,6 +6,7 @@ import org.reflections.Reflections
 import org.reflections.scanners.FieldAnnotationsScanner
 import org.reflections.util.ConfigurationBuilder
 import java.lang.reflect.Field
+import java.lang.reflect.Method
 import kotlin.streams.toList
 
 object ReflectionUtil {
@@ -52,6 +53,21 @@ object ReflectionUtil {
         }
 
         // Return fallback
+        return null
+    }
+
+    fun getMethod(clazz: Class<*>, methodNames: Array<String>, parameters: Array<Class<*>>): Method? {
+        for (name in methodNames) {
+            try {
+                val m = clazz.getDeclaredMethod(name, *parameters)
+                if (m != null) {
+                    m.isAccessible = true
+                    return m
+                }
+            } catch (ignored: NoSuchMethodException) {
+            }
+
+        }
         return null
     }
 

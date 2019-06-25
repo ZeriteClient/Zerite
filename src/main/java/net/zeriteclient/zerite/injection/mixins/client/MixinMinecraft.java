@@ -406,6 +406,8 @@ public abstract class MixinMinecraft {
 
         this.currentScreen = guiScreenIn;
 
+        EventBus.INSTANCE.post(new GuiDisplayEvent(guiScreenIn));
+
         if (guiScreenIn != null) {
             this.setIngameNotInFocus();
             ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft());
@@ -413,8 +415,6 @@ public abstract class MixinMinecraft {
             int j = scaledresolution.getScaledHeight();
             guiScreenIn.setWorldAndResolution(Minecraft.getMinecraft(), i, j);
             this.skipRenderWorld = false;
-
-            EventBus.INSTANCE.post(new GuiDisplayEvent(guiScreenIn));
         } else {
             this.mcSoundHandler.resumeSounds();
             this.setIngameFocus();
