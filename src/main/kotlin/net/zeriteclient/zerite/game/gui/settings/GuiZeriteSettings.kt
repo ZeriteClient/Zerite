@@ -7,12 +7,14 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.ResourceLocation
 import net.zeriteclient.zerite.game.gui.settings.element.impl.SettingsButton
+import net.zeriteclient.zerite.game.gui.settings.element.impl.SettingsToggle
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingController
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingDropdown
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingGroup
 import net.zeriteclient.zerite.util.EnumBackground
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import org.lwjgl.input.Keyboard
+import org.lwjgl.input.Mouse
 import java.awt.Color
 import java.io.IOException
 
@@ -35,7 +37,8 @@ class GuiZeriteSettings : GuiScreen() {
                         "Dropdown $j", arrayListOf(
                             SettingsButton("Button", onClick = {
                                 println("TEST")
-                            })
+                            }),
+                            SettingsToggle("Toggle", onChange = {})
                         )
                     )
                 )
@@ -44,7 +47,7 @@ class GuiZeriteSettings : GuiScreen() {
             groups.add(SettingGroup("Group $i", ResourceLocation("textures/icons/info.png"), dropdowns))
         }
 
-        controller = SettingController(groups, groups[0])
+        controller = SettingController(groups)
     }
 
     /**
@@ -100,6 +103,18 @@ class GuiZeriteSettings : GuiScreen() {
         if (keyCode == Keyboard.KEY_ESCAPE) {
             Minecraft.getMinecraft().displayGuiScreen(null)
         }
+    }
+
+    override fun handleMouseInput() {
+        if (Mouse.getEventDWheel() != 0)
+            controller.mouseScrolled(Mouse.getEventDWheel())
+
+        super.handleMouseInput()
+    }
+
+    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
+        controller.mouseClicked(mouseX, mouseY, mouseButton)
+        super.mouseClicked(mouseX, mouseY, mouseButton)
     }
 
     /**

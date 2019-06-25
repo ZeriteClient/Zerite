@@ -26,6 +26,8 @@ class SettingDropdown(private val name: String, private val elements: ArrayList<
             val element = elements[i]
             element.dimensions = RenderDimension(itemWidth, 0, xPos, yPos)
 
+            lastHeight = element.dimensions.height
+
             element.draw()
 
             if (lastHeight == 0) {
@@ -38,11 +40,16 @@ class SettingDropdown(private val name: String, private val elements: ArrayList<
                 xPos = dimension.x + 5
                 yPos += Math.max(lastHeight, element.dimensions.height) + 5
             }
-
-            lastHeight = element.dimensions.height
         }
 
+        if (elements.size % 2 == 0)
+            yPos -= lastHeight + 5
+
         dimension.height = yPos + lastHeight - dimension.y + 2
+    }
+
+    fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
+        elements.forEach { it.mouseClicked(mouseButton, mouseX, mouseY) }
     }
 
 }

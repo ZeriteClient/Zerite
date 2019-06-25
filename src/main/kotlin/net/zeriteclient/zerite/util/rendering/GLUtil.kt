@@ -1,46 +1,42 @@
 package net.zeriteclient.zerite.util.rendering
 
-import net.minecraft.client.renderer.GlStateManager
 import org.lwjgl.opengl.GL11
 
 object GLUtil {
 
-    private val specialStates: HashMap<Int, (to: Boolean) -> Unit> = hashMapOf(
-        Pair(GL11.GL_BLEND, { to ->
-            if (to) GlStateManager.enableBlend() else GlStateManager.disableBlend()
+    fun preStencil() {
+        GL11.glEnable(GL11.GL_STENCIL_TEST)
+        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT)
 
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
-            GlStateManager.blendFunc(770, 771)
-        })
-    )
-    private val changedStates: HashMap<Int, Boolean> = hashMapOf()
-
-    fun begin(build: StateBuilder.() -> Unit) {
-        val builder = StateBuilder()
-        builder.build()
-        changedStates.putAll(builder.states.map { Pair(it, GL11.glIsEnabled(it)) })
-        builder.changedStates.forEach {
-            if (it.value) GL11.glEnable(it.key) else GL11.glDisable(it.key)
-            specialStates[it.key]?.invoke(it.value)
-        }
+        GL11.glColorMask(false, false, false, false)
+        GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 255)
+        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE)
     }
 
-    fun end() {
-        changedStates.forEach { if (it.value) GL11.glEnable(it.key) else GL11.glDisable(it.key) }
-        changedStates.clear()
+    fun postStencil() {
+        GL11.glColorMask(true, true, true, true)
+        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE)
+        GL11.glStencilFunc(GL11.GL_EQUAL, 1, 255)
+    }
+
+    fun postStencilDraw() {
+        GL11.glDisable(GL11.GL_STENCIL_TEST)
     }
 
 }
 
-class StateBuilder {
-    val states: ArrayList<Int> = arrayListOf()
-    val changedStates: HashMap<Int, Boolean> = hashMapOf()
+fun usingStencil(setup: StencilBuilder.() -> Unit) {
+    val stencilBuilder = StencilBuilder()
+    stencilBuilder.setup()
 
-    private fun addState(state: Int) = states.add(state)
-    fun changeState(state: Int, to: Boolean) {
-        addState(state)
-        changedStates[state] = to
-    }
+    GLUtil.preStencil()
+    stencilBuilder.stencil()
+    GLUtil.postStencil()
+    stencilBuilder.scene()
+    GLUtil.postStencilDraw()
+}
 
-    operator fun plus(int: Int) = addState(int)
+class StencilBuilder {
+    var stencil: () -> Unit = {}
+    var scene: () -> Unit = {}
 }

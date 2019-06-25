@@ -2,6 +2,7 @@ package net.zeriteclient.zerite.game.gui.settings.tab
 
 import net.minecraft.util.ResourceLocation
 import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
+import net.zeriteclient.zerite.util.game.MouseUtil
 import net.zeriteclient.zerite.util.rendering.RenderDimension
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import org.lwjgl.opengl.GL11
@@ -11,6 +12,8 @@ import java.awt.Color
 class SettingGroup(val name: String, val icon: ResourceLocation, private val dropDowns: ArrayList<SettingDropdown>) {
 
     var dimension: RenderDimension = RenderDimension(0, 0, 0, 0)
+    private var scrollProgress = 0
+    private var lastYPos = 0
 
     fun draw() {
         val mediumFont = ZeriteFonts.medium
@@ -46,7 +49,7 @@ class SettingGroup(val name: String, val icon: ResourceLocation, private val dro
             Color(2, 136, 209, 255).rgb
         )
 
-        var yPos = dimension.y + 20
+        var yPos = dimension.y + 20 - scrollProgress
 
         for (dropdown in dropDowns) {
             dropdown.dimension = RenderDimension(dimension.width, 0, dimension.x, yPos)
@@ -55,7 +58,19 @@ class SettingGroup(val name: String, val icon: ResourceLocation, private val dro
             yPos += dropdown.dimension.height
         }
 
+        lastYPos = yPos
+
         GL11.glDisable(GL11.GL_STENCIL_TEST)
+    }
+
+    fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
+        dropDowns.forEach { it.mouseClicked(mouseX, mouseY, mouseButton) }
+    }
+
+    fun mouseScrolled(wheel: Int) {
+        if (MouseUtil.isHovered(dimension.x, dimension.y, dimension.width, dimension.height))
+            if (lastYPos - dimension.height > dimension.y || wheel < 0)
+                scrollProgress = Math.max(0, scrollProgress + wheel / 8)
     }
 
 }
