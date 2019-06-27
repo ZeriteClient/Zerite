@@ -6,8 +6,9 @@ import net.zeriteclient.zerite.util.rendering.RenderDimension
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import java.awt.Color
 
-class SettingDropdown(private val name: String, private val elements: ArrayList<SettingsElement>) {
+class SettingDropdown(val name: String) {
 
+    val elements: ArrayList<SettingsElement> = arrayListOf()
     var dimension: RenderDimension = RenderDimension(0, 0, 0, 0)
 
     fun draw() {

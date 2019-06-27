@@ -9,8 +9,9 @@ import org.lwjgl.opengl.GL11
 import java.awt.Color
 
 
-class SettingGroup(val name: String, val icon: ResourceLocation, private val dropDowns: ArrayList<SettingDropdown>) {
+class SettingGroup(val name: String, val icon: ResourceLocation) {
 
+    val dropDowns: ArrayList<SettingDropdown> = arrayListOf()
     var dimension: RenderDimension = RenderDimension(0, 0, 0, 0)
     private var scrollProgress = 0
     private var lastYPos = 0

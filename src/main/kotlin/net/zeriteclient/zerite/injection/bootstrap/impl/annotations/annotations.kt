@@ -1,8 +1,14 @@
 package net.zeriteclient.zerite.injection.bootstrap.impl.annotations
 
+import net.zeriteclient.zerite.game.gui.settings.EnumSettingCategory
+
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
 annotation class Instance(val registerEvents: Boolean = false, val registerConfig: Boolean = false)
+
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.CLASS)
+annotation class ConfigSettings(val name: String, val category: EnumSettingCategory = EnumSettingCategory.MODS)
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)

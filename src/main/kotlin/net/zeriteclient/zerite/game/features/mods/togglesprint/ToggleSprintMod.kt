@@ -5,13 +5,16 @@ import net.zeriteclient.zerite.event.RenderGameOverlayEvent
 import net.zeriteclient.zerite.event.Subscribe
 import net.zeriteclient.zerite.event.TickEvent
 import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
+import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.ConfigSettings
 import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.Instance
 import net.zeriteclient.zerite.injection.bootstrap.impl.configuration.StoreConfig
+import java.awt.Color
 
 @Instance(registerConfig = true, registerEvents = true)
+@ConfigSettings("Toggle Sprint")
 object ToggleSprintMod {
 
-    @StoreConfig
+    @StoreConfig("Toggled")
     var toggled: Boolean = false
 
     @Subscribe
@@ -30,7 +33,7 @@ object ToggleSprintMod {
                 "Sprint Toggled",
                 2,
                 e.scaledResolution.scaledHeight - ZeriteFonts.mediumSmall.getHeight("Sprint Toggled") - 2,
-                -0xFFFFFF,
+                Color.WHITE.rgb,
                 shadow = false,
                 chroma = true
             )

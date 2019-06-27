@@ -6,10 +6,7 @@ import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.ResourceLocation
-import net.zeriteclient.zerite.game.gui.settings.element.impl.SettingsButton
-import net.zeriteclient.zerite.game.gui.settings.element.impl.SettingsToggle
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingController
-import net.zeriteclient.zerite.game.gui.settings.tab.SettingDropdown
 import net.zeriteclient.zerite.game.gui.settings.tab.SettingGroup
 import net.zeriteclient.zerite.util.EnumBackground
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
@@ -18,7 +15,11 @@ import org.lwjgl.input.Mouse
 import java.awt.Color
 import java.io.IOException
 
-class GuiZeriteSettings : GuiScreen() {
+object GuiZeriteSettings : GuiScreen() {
+
+    val groups = hashMapOf(
+        EnumSettingCategory.MODS to SettingGroup("Mods", ResourceLocation("textures/icons/info.png"))
+    )
 
     /**
      * The controller for what elements are added to a menu
@@ -26,28 +27,7 @@ class GuiZeriteSettings : GuiScreen() {
     private var controller: SettingController
 
     init {
-        val groups = arrayListOf<SettingGroup>()
-
-        for (i in 0..9) {
-            val dropdowns = arrayListOf<SettingDropdown>()
-
-            for (j in 0..9) {
-                dropdowns.add(
-                    SettingDropdown(
-                        "Dropdown $j", arrayListOf(
-                            SettingsButton("Button", onClick = {
-                                println("TEST")
-                            }),
-                            SettingsToggle("Toggle", onChange = {})
-                        )
-                    )
-                )
-            }
-
-            groups.add(SettingGroup("Group $i", ResourceLocation("textures/icons/info.png"), dropdowns))
-        }
-
-        controller = SettingController(groups)
+        controller = SettingController(ArrayList(groups.values))
     }
 
     /**

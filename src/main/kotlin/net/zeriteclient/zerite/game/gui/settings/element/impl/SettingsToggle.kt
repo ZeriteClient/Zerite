@@ -29,19 +29,19 @@ class SettingsToggle(
         mediumSmallFont.drawString(label, dimensions.x, dimensions.y + 3, -0x1)
 
         ShapeUtil.drawFilledRoundedRectangle(
-            dimensions.x + dimensions.width - 30,
+            dimensions.x + dimensions.width - 25,
             dimensions.y + 4,
-            20,
+            15,
             5,
             2,
             -0x1
         )
         ShapeUtil.drawFilledCircle(
-            (dimensions.x + dimensions.width - (animation / 50 + 1.5) * 20).toInt(),
+            (dimensions.x + dimensions.width - 32 + ((animation + 50) / 100) * 20).toInt(),
             dimensions.y + dimensions.height / 2,
             5,
             50,
-            Color.getHSBColor((0.294f - (animation / 50.0f + 1f) * 0.294f).toFloat(), 0.8f, 0.9f).rgb
+            Color.getHSBColor(((animation + 50.0f) / 100.0f * 0.35f - 0.13f).toFloat(), 0.8f, 0.8f).rgb
         )
     }
 

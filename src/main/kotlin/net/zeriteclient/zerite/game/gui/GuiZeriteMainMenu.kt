@@ -86,7 +86,7 @@ class GuiZeriteMainMenu : GuiScreen() {
         when {
             button!!.id == 0 -> Minecraft.getMinecraft().displayGuiScreen(GuiSelectWorld(this))
             button.id == 1 -> Minecraft.getMinecraft().displayGuiScreen(GuiMultiplayer(this))
-            button.id == 2 -> Minecraft.getMinecraft().displayGuiScreen(GuiZeriteSettings())
+            button.id == 2 -> Minecraft.getMinecraft().displayGuiScreen(GuiZeriteSettings)
             button.id == 4 -> Minecraft.getMinecraft().shutdown()
             button.id == 5 -> Minecraft.getMinecraft().displayGuiScreen(GuiOptions(this, Minecraft.getMinecraft().gameSettings))
         }
