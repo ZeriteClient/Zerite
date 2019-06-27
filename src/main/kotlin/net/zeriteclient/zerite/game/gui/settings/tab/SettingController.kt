@@ -79,7 +79,7 @@ class SettingController(private val groups: ArrayList<SettingGroup>) {
                 for (i in groups.indices) {
                     val group = groups[i]
 
-                    ShapeUtil.drawFilledCircle(x + radius, y + radius, radius, 50, -0x1)
+                    ShapeUtil.drawFilledCircle(x + radius, y + radius, radius, 70, -0x1)
 
                     GL11.glColor4f(0.2f, 0.2f, 0.2f, 1.0f)
                     Minecraft.getMinecraft().textureManager.bindTexture(group.icon)

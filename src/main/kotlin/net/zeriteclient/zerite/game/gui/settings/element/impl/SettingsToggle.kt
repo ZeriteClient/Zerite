@@ -21,7 +21,11 @@ class SettingsToggle(
      * Draw the button to the screen
      */
     override fun draw() {
-        animation = Math.max(-50.0, Math.min(50.0, AnimationUtil.easeOut(lastAnimation, if (toggled) 50.0 else -50.0, lastChange, 1000.0)))
+        animation = Math.max(
+            -50.0,
+            Math.min(50.0, AnimationUtil.easeOut(lastAnimation, if (toggled) 50.0 else -50.0, lastChange, 1000.0))
+        )
+        animation = if (animation < 0) animation + 50 else animation
 
         dimensions.height = 15
 
@@ -32,7 +36,7 @@ class SettingsToggle(
             dimensions.x + dimensions.width - 25,
             dimensions.y + 4,
             15,
-            5,
+            6,
             2,
             -0x1
         )

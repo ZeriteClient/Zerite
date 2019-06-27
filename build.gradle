@@ -17,6 +17,9 @@
  */
 
 buildscript {
+    def f = file("gradle/mcversion.txt")
+    project.ext.mcVersion = f.exists() ? f.readLines().first() as int : 10809
+
     repositories {
         mavenCentral()
         maven { url 'https://files.minecraftforge.net/maven' }
@@ -82,7 +85,7 @@ jar {
 
     manifest.attributes(
             'TweakClass': 'net.zeriteclient.zerite.injection.stages.tweaker.ZeriteTweaker',
-//            'MixinConfigs': 'mixins.zerite.json',
+            'MixinConfigs': 'mixins.zerite.json',
             'Manifest-Version': 1.0,
             'TweakOrder': 0
     )
@@ -109,4 +112,41 @@ mixin {
 
 compileKotlin {
     kotlinOptions.jvmTarget = '1.8'
+}
+
+task copySrg(type: Copy, dependsOn: 'genSrgs') {
+    from {project.tasks.genSrgs.mcpToSrg}
+    into 'mappings'
+}
+
+compileJava.dependsOn copySrg
+
+setupDecompWorkspace.dependsOn copySrg
+setupDevWorkspace.dependsOn copySrg
+
+apply from: 'preprocessor.gradle'
+
+task changeMcVersion() {
+    doLast {
+        def version
+
+        if (project.hasProperty("minecraftVersion")) {
+            version = project.minecraftVersion
+        } else {
+            version = 10809
+            println "Defaulting to version 1.8.9..."
+        }
+
+        project.ext.mcVersion = version
+        def f = file("gradle/mcversion.txt")
+        f.delete()
+        f.createNewFile()
+        f.write(version.toString())
+
+        println "MC target version is $version"
+        def vars = [MC: version as int]
+        project.convertTree(vars, 'src/main/java')
+        project.convertTree(vars, 'src/main/kotlin')
+        project.convertTree(vars, 'src/main/resources')
+    }
 }

@@ -36,8 +36,10 @@ object ShapeUtil {
 
         GL11.glEnable(GL11.GL_LINE_SMOOTH)
         GL11.glEnable(GL11.GL_POLYGON_SMOOTH)
+        GL11.glEnable(GL11.GL_POINT_SMOOTH)
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
         GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST)
+        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST)
 
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
@@ -51,6 +53,7 @@ object ShapeUtil {
 
         GL11.glDisable(GL11.GL_LINE_SMOOTH)
         GL11.glDisable(GL11.GL_POLYGON_SMOOTH)
+        GL11.glDisable(GL11.GL_POINT_SMOOTH)
 
         GlStateManager.popAttrib()
         GlStateManager.popMatrix()
@@ -77,8 +80,8 @@ object ShapeUtil {
         // Loop for segments
         for (i in 0 until segments) {
             // Create point positions
-            val px = x + radius * MathHelper.sin((i * 0.12566370614359174).toFloat())
-            val py = y + radius * MathHelper.cos((i * 0.12566370614359174).toFloat())
+            val px = x + radius * MathHelper.sin((i * (6.28318530718 / segments)).toFloat())
+            val py = y + radius * MathHelper.cos((i * (6.28318530718 / segments)).toFloat())
 
             // Bind color
             bindColor(color)

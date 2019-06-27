@@ -65,8 +65,11 @@ object SplashRenderer {
 
         // Bind the background texture and render it
         GlStateManager.color(1.0f, 1.0f, 1.0f, opacity / 255.0f)
-        tm.bindTexture(EnumBackground.BACKGROUND_1.location)
-        Gui.drawModalRectWithCustomSizedTexture(0, 0, 0f, 0f, width, height, width.toFloat(), height.toFloat())
+
+        if (!overlay) {
+            tm.bindTexture(EnumBackground.BACKGROUND_1.location)
+            Gui.drawModalRectWithCustomSizedTexture(0, 0, 0f, 0f, width, height, width.toFloat(), height.toFloat())
+        }
 
         ShapeUtil.drawGradientRect(
             0.0,
@@ -114,7 +117,7 @@ object SplashRenderer {
             height - 10,
             (progress / maxSize * width).toInt(),
             10,
-            Color(41,182,246, opacity).rgb
+            Color(41, 182, 246, opacity).rgb
         )
 
         s = "Stage 1"

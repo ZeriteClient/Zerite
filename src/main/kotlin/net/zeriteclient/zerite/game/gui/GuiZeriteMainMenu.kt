@@ -8,7 +8,6 @@ import net.zeriteclient.zerite.game.gui.components.LinkButton
 import net.zeriteclient.zerite.game.gui.settings.GuiZeriteSettings
 import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.util.EnumBackground
-import net.zeriteclient.zerite.util.other.TimeUtil
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import java.awt.Color
 
@@ -78,7 +77,7 @@ class GuiZeriteMainMenu : GuiScreen() {
 
         super.drawScreen(mouseX, mouseY, partialTicks)
 
-        overlayOpacity = Math.max(0.0, overlayOpacity - Math.max(30.0, TimeUtil.delta / 20.0))
+        overlayOpacity = Math.max(0.0, overlayOpacity - 20.0)
         SplashRenderer.drawSplash(Minecraft.getMinecraft().textureManager, true, overlayOpacity.toInt())
     }
 

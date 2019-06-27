@@ -17,8 +17,10 @@ import java.io.IOException
 
 object GuiZeriteSettings : GuiScreen() {
 
+    private var ordered = false
+
     val groups = hashMapOf(
-        EnumSettingCategory.MODS to SettingGroup("Mods", ResourceLocation("textures/icons/info.png"))
+        EnumSettingCategory.MODS to SettingGroup("Mods", ResourceLocation("textures/icons/settings.png"))
     )
 
     /**
@@ -34,6 +36,12 @@ object GuiZeriteSettings : GuiScreen() {
      * Initialize the Zerite GUI
      */
     override fun initGui() {
+        if (!ordered) {
+            ordered = true
+
+            groups.forEach { it.value.dropDowns.sortByDescending { v -> v.name } }
+        }
+
         val scaledResolution = ScaledResolution(Minecraft.getMinecraft())
 
         this.buttonList.add(

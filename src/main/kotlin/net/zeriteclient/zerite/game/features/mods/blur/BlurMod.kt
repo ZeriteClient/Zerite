@@ -9,12 +9,18 @@ import net.minecraft.util.ResourceLocation
 import net.zeriteclient.zerite.event.GuiDisplayEvent
 import net.zeriteclient.zerite.event.RenderTickEvent
 import net.zeriteclient.zerite.event.Subscribe
+import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.ConfigSettings
 import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.Instance
+import net.zeriteclient.zerite.injection.bootstrap.impl.configuration.StoreConfig
 import net.zeriteclient.zerite.util.other.ReflectionUtil
 import net.zeriteclient.zerite.util.rendering.ShaderUtil
 
-@Instance(registerEvents = true)
+@Instance(registerEvents = true, registerConfig = true)
+@ConfigSettings("Other")
 object BlurMod {
+
+    @StoreConfig("Blur GUI backgrounds")
+    private var toggled = true
 
     private var start: Long = 0
 
@@ -27,7 +33,7 @@ object BlurMod {
     fun onRenderTick(e: RenderTickEvent) {
         val sg = Minecraft.getMinecraft().entityRenderer.shaderGroup
         try {
-            if (!Minecraft.getMinecraft().entityRenderer.isShaderActive) {
+            if (!Minecraft.getMinecraft().entityRenderer.isShaderActive || !toggled) {
                 return
             }
             val field = ReflectionUtil
@@ -61,6 +67,8 @@ object BlurMod {
                 .getMinecraft().theWorld.playerEntities.contains(Minecraft.getMinecraft().thePlayer)
             && !Minecraft.getMinecraft().entityRenderer.isShaderActive
         ) {
+            if (!toggled) return
+
             start = System.currentTimeMillis()
             ShaderUtil
                 .applyShader(ResourceLocation("minecraft", "shaders/post/fade_in_blur.json"))

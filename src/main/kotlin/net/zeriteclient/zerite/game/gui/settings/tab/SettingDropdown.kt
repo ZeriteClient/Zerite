@@ -1,5 +1,8 @@
 package net.zeriteclient.zerite.game.gui.settings.tab
 
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.zeriteclient.zerite.game.gui.settings.element.SettingsElement
 import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.util.rendering.RenderDimension
@@ -15,6 +18,23 @@ class SettingDropdown(val name: String) {
         val mediumSmallFont = ZeriteFonts.mediumSmall
 
         ShapeUtil.drawRectWithSize(dimension.x, dimension.y, dimension.width, 20, Color(255, 255, 255, 50).rgb)
+
+        val tessellator = Tessellator.getInstance()
+        val worldRenderer = tessellator.worldRenderer
+
+        GlStateManager.enableBlend()
+        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1)
+        GlStateManager.disableAlpha()
+        GlStateManager.shadeModel(7425)
+        GlStateManager.disableTexture2D()
+
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR)
+        worldRenderer.pos(dimension.x.toDouble(), dimension.y + 20.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 30).endVertex()
+        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 20.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 30).endVertex()
+        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 23.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 0).endVertex()
+        worldRenderer.pos(dimension.x.toDouble(), dimension.y + 23.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 0).endVertex()
+        tessellator.draw()
+
         mediumSmallFont.drawString(name, dimension.x + 5, dimension.y + 5, -0x1)
 
         var xPos = dimension.x + 5
