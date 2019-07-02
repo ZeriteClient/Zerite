@@ -123,6 +123,7 @@ compileJava.dependsOn copySrg
 
 setupDecompWorkspace.dependsOn copySrg
 setupDevWorkspace.dependsOn copySrg
+setupCiWorkspace.dependsOn copySrg
 
 apply from: 'preprocessor.gradle'
 

@@ -1,0 +1,39 @@
+language: java
+install:
+  - 'gradle wrapper --gradle-version 2.7'
+script:
+  - 'bash gradlew changeMcVersion setupCiWorkspace build'
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+before_deploy:
+  - git config --global user.email "owner@kodingking.com"
+  - git config --global user.name "Koding Assistant"
+  - export GIT_TAG=Beta-B$TRAVIS_BUILD_NUMBER
+  - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  - 'cp ./build/libs/Zerite-B*.jar Zerite.jar'
+deploy:
+  provider: releases
+  api_key:
+    secure: $GITHUB_API_KEY
+  file: "Zerite.jar"
+  skip_cleanup: true
+  on:
+    tags: false
+    all_branches: true
+after_success:
+  - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+after_failure:
+  - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
+if: tag IS blank
+branches:
+  only:
+    - master
