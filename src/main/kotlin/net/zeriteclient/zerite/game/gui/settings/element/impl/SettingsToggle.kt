@@ -37,7 +37,7 @@ class SettingsToggle(
             dimensions.y + 4,
             15,
             6,
-            2,
+            3,
             -0x1
         )
         ShapeUtil.drawFilledCircle(

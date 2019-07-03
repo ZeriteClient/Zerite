@@ -1,4 +1,4 @@
-package net.zeriteclient .zerite.injection.stages.tweaker
+package net.zeriteclient.zerite.injection.stages.tweaker
 
 import net.minecraft.launchwrapper.ITweaker
 import net.minecraft.launchwrapper.LaunchClassLoader
@@ -11,13 +11,14 @@ class ZeriteTweaker : ITweaker {
 
     private val arguments: MutableList<String> = mutableListOf()
 
-    override fun acceptOptions(args: MutableList<String>?, gameDir: File?, assetsDir: File?, profile: String?) {
-        arguments.addAll(args?: listOf())
-        arguments.addAll(listOf(
-            "--gameDir", gameDir?.absolutePath ?: ".",
-            "--assetsDir", assetsDir?.absolutePath ?: ".",
-            "--version", profile ?: "Zerite"
-        ))
+    override fun acceptOptions(args: MutableList<String>, gameDir: File?, assetsDir: File?, profile: String?) {
+        arguments.addAll(
+            args + listOf(
+                "--gameDir", gameDir?.absolutePath ?: ".",
+                "--assetsDir", assetsDir?.absolutePath ?: ".",
+                "--version", profile ?: "Zerite"
+            )
+        )
     }
 
     override fun getLaunchTarget(): String = "net.minecraft.client.main.Main"
