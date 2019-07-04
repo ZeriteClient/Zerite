@@ -12,7 +12,6 @@ public class MixinGuiIngame {
 
     @Inject(method = "renderGameOverlay", at = @At("RETURN"))
     private void renderGameOverlay(float partialTicks, CallbackInfo ci) {
-        MixinGuiIngameImp.INSTANCE.renderGameOverlay(partialTicks, ci);
+        MixinGuiIngameImp.INSTANCE.renderGameOverlay(partialTicks);
     }
-
 }

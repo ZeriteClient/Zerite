@@ -17,16 +17,11 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(LoadingScreenRenderer.class)
 public class MixinLoadingScreenRenderer {
 
-    @Shadow
-    private Minecraft mc;
-    @Shadow
-    private long systemTime;
-    @Shadow
-    private Framebuffer framebuffer;
-    @Shadow
-    private String currentlyDisplayedText;
-    @Shadow
-    private String message;
+    @Shadow private Minecraft mc;
+    @Shadow private long systemTime;
+    @Shadow private Framebuffer framebuffer;
+    @Shadow private String currentlyDisplayedText;
+    @Shadow private String message;
 
     /**
      * @author Koding
