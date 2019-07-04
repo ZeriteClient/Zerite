@@ -8,6 +8,7 @@ import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.util.rendering.RenderDimension
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import java.awt.Color
+import kotlin.math.max
 
 class SettingDropdown(val name: String) {
 
@@ -30,8 +31,10 @@ class SettingDropdown(val name: String) {
 
         worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR)
         worldRenderer.pos(dimension.x.toDouble(), dimension.y + 20.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 30).endVertex()
-        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 20.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 30).endVertex()
-        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 23.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 0).endVertex()
+        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 20.0, 0.0).tex(0.0, 0.0)
+            .color(0, 0, 0, 30).endVertex()
+        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 23.0, 0.0).tex(0.0, 0.0)
+            .color(0, 0, 0, 0).endVertex()
         worldRenderer.pos(dimension.x.toDouble(), dimension.y + 23.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 0).endVertex()
         tessellator.draw()
 
@@ -59,7 +62,7 @@ class SettingDropdown(val name: String) {
 
             if (i % 2 == 1) {
                 xPos = dimension.x + 5
-                yPos += Math.max(lastHeight, element.dimensions.height) + 5
+                yPos += max(lastHeight, element.dimensions.height) + 5
             }
         }
 

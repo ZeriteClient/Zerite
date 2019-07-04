@@ -83,7 +83,7 @@ class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasi
                     continue
                 }
 
-                val charStr = Character.toString(c)
+                val charStr = c.toString()
 
                 font.drawString(
                     currentX,

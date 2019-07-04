@@ -6,6 +6,8 @@ import net.zeriteclient.zerite.util.game.MouseUtil
 import net.zeriteclient.zerite.util.rendering.AnimationUtil
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import java.awt.Color
+import kotlin.math.max
+import kotlin.math.min
 
 class SettingsToggle(
     private val label: String,
@@ -21,9 +23,9 @@ class SettingsToggle(
      * Draw the button to the screen
      */
     override fun draw() {
-        animation = Math.max(
+        animation = max(
             -50.0,
-            Math.min(50.0, AnimationUtil.easeOut(lastAnimation, if (toggled) 50.0 else -50.0, lastChange, 1000.0))
+            min(50.0, AnimationUtil.easeOut(lastAnimation, if (toggled) 50.0 else -50.0, lastChange, 1000.0))
         )
         animation = if (animation < 0) animation + 50 else animation
 

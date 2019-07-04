@@ -336,12 +336,12 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/EntityRenderer;updateCameraAndRender(FJ)V", shift = At.Shift.AFTER))
     private void runGameLoop(CallbackInfo ci) {
-        MixinMinecraftImpl.INSTANCE.runGameLoop(ci);
+        MixinMinecraftImpl.INSTANCE.runGameLoop();
     }
 
     @Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("RETURN"), cancellable = true)
     private void loadWorld(WorldClient worldClient, String message, CallbackInfo ci) {
-        MixinMinecraftImpl.INSTANCE.loadWorld(worldClient, message, ci);
+        MixinMinecraftImpl.INSTANCE.loadWorld(worldClient, message);
         this.systemTime = 0; // clear system time so worlds load instantly when switching
     }
 
@@ -352,6 +352,6 @@ public abstract class MixinMinecraft {
      */
     @Inject(method = "toggleFullscreen", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setFullscreen(Z)V", shift = At.Shift.BEFORE))
     private void toggleFullscreen(CallbackInfo ci) {
-        MixinMinecraftImpl.INSTANCE.toggleFullscreen(ci);
+        MixinMinecraftImpl.INSTANCE.toggleFullscreen();
     }
 }

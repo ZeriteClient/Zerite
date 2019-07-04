@@ -10,6 +10,7 @@ import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.util.EnumBackground
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import java.awt.Color
+import kotlin.math.max
 
 object SplashRenderer {
 
@@ -76,7 +77,7 @@ object SplashRenderer {
             0.0,
             width.toDouble(),
             height.toDouble(),
-            Color(3, 169, 244, Math.max(0, opacity - 100)).rgb,
+            Color(3, 169, 244, max(0, opacity - 100)).rgb,
             Color(2, 136, 209, opacity).rgb
         )
 

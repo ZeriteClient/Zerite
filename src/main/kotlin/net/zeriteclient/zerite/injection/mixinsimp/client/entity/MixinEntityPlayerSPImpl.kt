@@ -18,7 +18,7 @@ object MixinEntityPlayerSPImpl {
         }
     }
 
-    fun onUpdate(ci: CallbackInfo) {
+    fun onUpdate() {
         EventBus.post(TickEvent())
     }
 

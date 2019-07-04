@@ -14,11 +14,11 @@ import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import net.zeriteclient.zerite.util.rendering.usingStencil
 import org.lwjgl.opengl.GL11
 import java.awt.Color
+import kotlin.math.max
 
 class SettingController(private val groups: ArrayList<SettingGroup>) {
 
-    var currentGroup: SettingGroup? = null
-        private set
+    private var currentGroup: SettingGroup? = null
     private var scrollProgress = 0
 
     fun draw() {
@@ -201,7 +201,7 @@ class SettingController(private val groups: ArrayList<SettingGroup>) {
             if (y <= 30)
                 return
 
-            scrollProgress = Math.max(0, scrollProgress + wheel / 8)
+            scrollProgress = max(0, scrollProgress + wheel / 8)
         }
 
         currentGroup?.mouseScrolled(wheel)

@@ -34,7 +34,7 @@ object EventBus {
     fun post(event: Event) {
         val subscribers: ArrayList<EventSubscriber> = arrayListOf()
 
-        registeredEventClasses.forEach { _, eventSubscribers ->
+        registeredEventClasses.forEach { (_, eventSubscribers) ->
             subscribers.addAll(eventSubscribers.stream()
                 .filter { eventSubscriber -> eventSubscriber.eventClass === event.javaClass }
                 .toList())
