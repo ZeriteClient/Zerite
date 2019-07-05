@@ -19,7 +19,8 @@ before_deploy:
   - 'cp ./build/libs/Zerite-*.jar Zerite.jar'
 deploy:
   provider: releases
-  api_key: $GITHUB_API_KEY
+  api_key:
+    secure: $GITHUB_API_KEY
   file: "Zerite.jar"
   skip_cleanup: true
   on:
