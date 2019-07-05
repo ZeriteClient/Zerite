@@ -1,5 +1,7 @@
 language: java
 jdk: openjdk8
+before_install:
+  - 'chmod +x ./gradlew'
 script:
   - 'bash gradlew changeMcVersion setupCiWorkspace build'
 before_cache:
