@@ -1,6 +1,6 @@
 language: java
 jdk: openjdk8
-before_install:
+install:
   - 'chmod +x ./gradlew'
 script:
   - 'bash gradlew changeMcVersion setupCiWorkspace build'
@@ -16,7 +16,7 @@ before_deploy:
   - git config --global user.name "Koding Assistant"
   - export GIT_TAG=Beta-B$TRAVIS_BUILD_NUMBER
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - 'cp ./build/libs/Zerite-B*.jar Zerite.jar'
+  - 'cp ./build/libs/Zerite-*.jar Zerite.jar'
 deploy:
   provider: releases
   api_key:
