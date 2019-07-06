@@ -10,6 +10,7 @@ import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.util.EnumBackground
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import java.awt.Color
+import kotlin.math.max
 
 class GuiZeriteMainMenu : GuiScreen() {
 
@@ -77,7 +78,7 @@ class GuiZeriteMainMenu : GuiScreen() {
 
         super.drawScreen(mouseX, mouseY, partialTicks)
 
-        overlayOpacity = Math.max(0.0, overlayOpacity - 20.0)
+        overlayOpacity = max(0.0, overlayOpacity - 20.0)
         SplashRenderer.drawSplash(Minecraft.getMinecraft().textureManager, true, overlayOpacity.toInt())
     }
 
@@ -87,7 +88,12 @@ class GuiZeriteMainMenu : GuiScreen() {
             button.id == 1 -> Minecraft.getMinecraft().displayGuiScreen(GuiMultiplayer(this))
             button.id == 2 -> Minecraft.getMinecraft().displayGuiScreen(GuiZeriteSettings)
             button.id == 4 -> Minecraft.getMinecraft().shutdown()
-            button.id == 5 -> Minecraft.getMinecraft().displayGuiScreen(GuiOptions(this, Minecraft.getMinecraft().gameSettings))
+            button.id == 5 -> Minecraft.getMinecraft().displayGuiScreen(
+                GuiOptions(
+                    this,
+                    Minecraft.getMinecraft().gameSettings
+                )
+            )
         }
     }
 }

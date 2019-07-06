@@ -55,148 +55,61 @@ import java.util.List;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
 
-    @Shadow
-    public WorldClient theWorld;
-    @Shadow
-    public GameSettings gameSettings;
-    @Shadow
-    public GuiIngame ingameGUI;
-
-    @Shadow
-    private SoundHandler mcSoundHandler;
-
-    @Shadow
-    @Final
-    public File mcDataDir;
-    @Shadow
-    @Final
-    private List<IResourcePack> defaultResourcePacks;
-    @Shadow
-    @Final
-    private DefaultResourcePack mcDefaultResourcePack;
-
-    @Shadow
-    protected abstract void startTimerHackThread();
-
-    @Shadow
-    public int displayWidth;
-    @Shadow
-    public int displayHeight;
-    @Shadow
-    @Final
-    private static Logger logger;
-
-    @Shadow
-    protected abstract void setWindowIcon();
-
-    @Shadow
-    protected abstract void setInitialDisplayMode() throws LWJGLException;
-
-    @Shadow
-    private Framebuffer framebufferMc;
-
-    @Shadow
-    protected abstract void registerMetadataSerializers();
-
-    @Shadow
-    private ResourcePackRepository mcResourcePackRepository;
-    @Shadow
-    @Final
-    private File fileResourcepacks;
-    @Shadow
-    @Final
-    private IMetadataSerializer metadataSerializer_;
-    @Shadow
-    private IReloadableResourceManager mcResourceManager;
-    @Shadow
-    private LanguageManager mcLanguageManager;
-
-    @Shadow
-    public abstract void refreshResources();
-
-    @Shadow
-    private TextureManager renderEngine;
-
-    @Shadow
-    protected abstract void initStream();
-
-    @Shadow
-    private SkinManager skinManager;
-    @Shadow
-    @Final
-    private File fileAssets;
-    @Shadow
-    @Final
-    private MinecraftSessionService sessionService;
-    @Shadow
-    private ISaveFormat saveLoader;
-    @Shadow
-    private MusicTicker mcMusicTicker;
-    @Shadow
-    public FontRenderer fontRendererObj;
-
-    @Shadow
-    public abstract boolean isUnicode();
-
-    @Shadow
-    public FontRenderer standardGalacticFontRenderer;
-    @Shadow
-    public MouseHelper mouseHelper;
-
-    @Shadow
-    protected abstract void checkGLError(String message);
-
-    @Shadow
-    private TextureMap textureMapBlocks;
-    @Shadow
-    private ModelManager modelManager;
-    @Shadow
-    private RenderItem renderItem;
-    @Shadow
-    private RenderManager renderManager;
-    @Shadow
-    private ItemRenderer itemRenderer;
-    @Shadow
-    public EntityRenderer entityRenderer;
-    @Shadow
-    private BlockRendererDispatcher blockRenderDispatcher;
-    @Shadow
-    public RenderGlobal renderGlobal;
-    @Shadow
-    public GuiAchievement guiAchievement;
-    @Shadow
-    public EffectRenderer effectRenderer;
-    @Shadow
-    private String serverName;
-    @Shadow
-    private int serverPort;
-    @Shadow
-    private ResourceLocation mojangLogo;
-    @Shadow
-    public LoadingScreenRenderer loadingScreen;
-    @Shadow
-    private boolean fullscreen;
-
-    @Shadow
-    public abstract void toggleFullscreen();
-
-    @Shadow
-    public GuiScreen currentScreen;
-    @Shadow
-    public EntityPlayerSP thePlayer;
-
-    @Shadow
-    public abstract void setIngameNotInFocus();
-
-    @Shadow
-    public boolean skipRenderWorld;
-
-    @Shadow
-    public abstract void setIngameFocus();
-
-    @Shadow
-    long systemTime;
-
+    @Shadow public WorldClient theWorld;
+    @Shadow public GameSettings gameSettings;
+    @Shadow public GuiIngame ingameGUI;
+    @Shadow private SoundHandler mcSoundHandler;
+    @Shadow @Final public File mcDataDir;
+    @Shadow @Final private List<IResourcePack> defaultResourcePacks;
+    @Shadow @Final private DefaultResourcePack mcDefaultResourcePack;
+    @Shadow protected abstract void startTimerHackThread();
+    @Shadow public int displayWidth;
+    @Shadow public int displayHeight;
+    @Shadow @Final private static Logger logger;
+    @Shadow protected abstract void setWindowIcon();
+    @Shadow protected abstract void setInitialDisplayMode() throws LWJGLException;
+    @Shadow private Framebuffer framebufferMc;
+    @Shadow protected abstract void registerMetadataSerializers();
+    @Shadow private ResourcePackRepository mcResourcePackRepository;
+    @Shadow @Final private File fileResourcepacks;
+    @Shadow @Final private IMetadataSerializer metadataSerializer_;
+    @Shadow private IReloadableResourceManager mcResourceManager;
+    @Shadow private LanguageManager mcLanguageManager;
+    @Shadow public abstract void refreshResources();
+    @Shadow private TextureManager renderEngine;
+    @Shadow protected abstract void initStream();
+    @Shadow private SkinManager skinManager;
+    @Shadow @Final private File fileAssets;
+    @Shadow @Final private MinecraftSessionService sessionService;
+    @Shadow private ISaveFormat saveLoader;
+    @Shadow private MusicTicker mcMusicTicker;
+    @Shadow public FontRenderer fontRendererObj;
+    @Shadow public abstract boolean isUnicode();
+    @Shadow public FontRenderer standardGalacticFontRenderer;
+    @Shadow public MouseHelper mouseHelper;
+    @Shadow protected abstract void checkGLError(String message);
+    @Shadow private TextureMap textureMapBlocks;
+    @Shadow private ModelManager modelManager;
+    @Shadow private RenderItem renderItem;
+    @Shadow private RenderManager renderManager;
+    @Shadow private ItemRenderer itemRenderer;
+    @Shadow public EntityRenderer entityRenderer;
+    @Shadow private BlockRendererDispatcher blockRenderDispatcher;
+    @Shadow public RenderGlobal renderGlobal;
+    @Shadow public GuiAchievement guiAchievement;
+    @Shadow public EffectRenderer effectRenderer;
+    @Shadow private String serverName;
+    @Shadow private int serverPort;
+    @Shadow private ResourceLocation mojangLogo;
+    @Shadow public LoadingScreenRenderer loadingScreen;
+    @Shadow private boolean fullscreen;
+    @Shadow public abstract void toggleFullscreen();
+    @Shadow public GuiScreen currentScreen;
+    @Shadow public EntityPlayerSP thePlayer;
+    @Shadow public abstract void setIngameNotInFocus();
+    @Shadow public boolean skipRenderWorld;
+    @Shadow public abstract void setIngameFocus();
+    @Shadow long systemTime;
     @Shadow protected abstract void updateDisplayMode() throws LWJGLException;
 
     /**
@@ -423,12 +336,12 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/EntityRenderer;updateCameraAndRender(FJ)V", shift = At.Shift.AFTER))
     private void runGameLoop(CallbackInfo ci) {
-        MixinMinecraftImpl.INSTANCE.runGameLoop(ci);
+        MixinMinecraftImpl.INSTANCE.runGameLoop();
     }
 
     @Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("RETURN"), cancellable = true)
     private void loadWorld(WorldClient worldClient, String message, CallbackInfo ci) {
-        MixinMinecraftImpl.INSTANCE.loadWorld(worldClient, message, ci);
+        MixinMinecraftImpl.INSTANCE.loadWorld(worldClient, message);
         this.systemTime = 0; // clear system time so worlds load instantly when switching
     }
 
@@ -439,6 +352,6 @@ public abstract class MixinMinecraft {
      */
     @Inject(method = "toggleFullscreen", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setFullscreen(Z)V", shift = At.Shift.BEFORE))
     private void toggleFullscreen(CallbackInfo ci) {
-        MixinMinecraftImpl.INSTANCE.toggleFullscreen(ci);
+        MixinMinecraftImpl.INSTANCE.toggleFullscreen();
     }
 }

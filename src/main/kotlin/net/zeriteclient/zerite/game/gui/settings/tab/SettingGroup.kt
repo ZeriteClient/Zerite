@@ -7,6 +7,7 @@ import net.zeriteclient.zerite.util.rendering.RenderDimension
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import org.lwjgl.opengl.GL11
 import java.awt.Color
+import kotlin.math.max
 
 
 class SettingGroup(val name: String, val icon: ResourceLocation) {
@@ -71,7 +72,7 @@ class SettingGroup(val name: String, val icon: ResourceLocation) {
     fun mouseScrolled(wheel: Int) {
         if (MouseUtil.isHovered(dimension.x, dimension.y, dimension.width, dimension.height))
             if (lastYPos - dimension.height > dimension.y || wheel < 0)
-                scrollProgress = Math.max(0, scrollProgress + wheel / 8)
+                scrollProgress = max(0, scrollProgress + wheel / 8)
     }
 
 }

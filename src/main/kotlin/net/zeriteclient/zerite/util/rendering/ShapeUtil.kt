@@ -5,6 +5,9 @@ import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.MathHelper
 import org.lwjgl.opengl.GL11
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.tan
 
 /**
  * Various utilities for rendering shapes into GUIs
@@ -120,14 +123,14 @@ object ShapeUtil {
 
         // Create theta and factors
         val theta = Math.toRadians(angle.toDouble()) / (segments - 1f)
-        val tf = Math.tan(theta)
+        val tf = tan(theta)
 
         // Create radial factor
-        val rf = Math.cos(theta)
+        val rf = cos(theta)
 
         // Create start position
-        var x = radius * Math.cos(Math.toRadians(start.toDouble()))
-        var y = radius * Math.sin(Math.toRadians(start.toDouble()))
+        var x = radius * cos(Math.toRadians(start.toDouble()))
+        var y = radius * sin(Math.toRadians(start.toDouble()))
 
         // Begin
         GL11.glBegin(GL11.GL_LINE_STRIP)
@@ -187,8 +190,8 @@ object ShapeUtil {
 
         for (i in 0 until segments) {
             val calc = deg - theta * i
-            val xInner = radius * Math.cos(calc) + cx
-            val yInner = radius * Math.sin(calc) + cy
+            val xInner = radius * cos(calc) + cx
+            val yInner = radius * sin(calc) + cy
 
             GL11.glVertex2d(xInner, yInner)
         }

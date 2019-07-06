@@ -14,6 +14,7 @@ import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.Instance
 import net.zeriteclient.zerite.injection.bootstrap.impl.configuration.StoreConfig
 import net.zeriteclient.zerite.util.other.ReflectionUtil
 import net.zeriteclient.zerite.util.rendering.ShaderUtil
+import kotlin.math.min
 
 @Instance(registerEvents = true, registerConfig = true)
 @ConfigSettings("Other")
@@ -44,12 +45,10 @@ object BlurMod {
                 val su = s.shaderManager.getShaderUniform("Progress")
                 if (su != null) {
                     val fadeTime = 350
-                    su.set(Math.min((System.currentTimeMillis() - start) / fadeTime.toFloat(), 1f))
+                    su.set(min((System.currentTimeMillis() - start) / fadeTime.toFloat(), 1f))
                 }
             }
         } catch (ex: IllegalArgumentException) {
-            propagate(ex)
-        } catch (ex: IllegalAccessException) {
             propagate(ex)
         }
     }

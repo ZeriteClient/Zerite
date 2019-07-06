@@ -13,68 +13,36 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
 
 @Mixin(GuiSlot.class)
 public abstract class MixinGuiSlot {
 
-    @Shadow
-    protected boolean field_178041_q;
-    @Shadow
-    protected int mouseX;
-    @Shadow
-    protected int mouseY;
-
-    @Shadow
-    protected abstract int getScrollBarX();
-
-    @Shadow
-    protected abstract void bindAmountScrolled();
-
-    @Shadow
-    protected int left;
-    @Shadow
-    protected int bottom;
-    @Shadow
-    protected float amountScrolled;
-    @Shadow
-    protected int top;
-    @Shadow
-    protected int width;
-
-    @Shadow
-    public abstract int getListWidth();
-
-    @Shadow
-    protected boolean hasListHeader;
-
-    @Shadow
-    protected abstract void drawListHeader(int p_148129_1_, int p_148129_2_, Tessellator p_148129_3_);
-
-    @Shadow
-    protected int height;
-
-    @Shadow
-    public abstract int func_148135_f();
-
-    @Shadow
-    protected abstract int getContentHeight();
-
-    @Shadow
-    protected abstract void func_148142_b(int p_148142_1_, int p_148142_2_);
-
+    @Shadow protected boolean field_178041_q;
+    @Shadow protected int mouseX;
+    @Shadow protected int mouseY;
+    @Shadow protected abstract int getScrollBarX();
+    @Shadow protected abstract void bindAmountScrolled();
+    @Shadow protected int left;
+    @Shadow protected int bottom;
+    @Shadow protected float amountScrolled;
+    @Shadow protected int top;
+    @Shadow protected int width;
+    @Shadow public abstract int getListWidth();
+    @Shadow protected boolean hasListHeader;
+    @Shadow protected abstract void drawListHeader(int p_148129_1_, int p_148129_2_, Tessellator p_148129_3_);
+    @Shadow protected int height;
+    @Shadow public abstract int func_148135_f();
+    @Shadow protected abstract int getContentHeight();
+    @Shadow protected abstract void func_148142_b(int p_148142_1_, int p_148142_2_);
     @Shadow protected abstract int getSize();
-
     @Shadow @Final protected int slotHeight;
     @Shadow protected int headerPadding;
-
     @Shadow protected abstract void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_);
-
     @Shadow protected boolean showSelectionBox;
-
     @Shadow protected abstract boolean isSelected(int slotIndex);
-
     @Shadow protected abstract void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn);
 
     /**

@@ -8,6 +8,8 @@ import net.zeriteclient.zerite.util.other.TimeUtil
 import net.zeriteclient.zerite.util.rendering.ShapeUtil
 import org.lwjgl.opengl.GL11
 import java.awt.Color
+import kotlin.math.max
+import kotlin.math.min
 
 class LinkButton(buttonId: Int, x: Int, y: Int, buttonText: String) :
     GuiButton(buttonId, x, y, 20, 20, buttonText) {
@@ -31,7 +33,7 @@ class LinkButton(buttonId: Int, x: Int, y: Int, buttonText: String) :
         width = fontRenderer.getWidth(displayString)
 
         // Create animation params
-        hoverFade = if (hovered) Math.min(255.0, hoverFade + TimeUtil.delta) else Math.max(0.0, hoverFade - TimeUtil.delta)
+        hoverFade = if (hovered) min(255.0, hoverFade + TimeUtil.delta) else max(0.0, hoverFade - TimeUtil.delta)
 
         // GL options
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)

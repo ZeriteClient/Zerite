@@ -17,7 +17,7 @@ public class MixinEntityPlayerSP {
 
     @Inject(method = "onUpdate", at = @At("RETURN"))
     private void onUpdate(CallbackInfo ci) {
-        MixinEntityPlayerSPImpl.INSTANCE.onUpdate(ci);
+        MixinEntityPlayerSPImpl.INSTANCE.onUpdate();
     }
 
 }

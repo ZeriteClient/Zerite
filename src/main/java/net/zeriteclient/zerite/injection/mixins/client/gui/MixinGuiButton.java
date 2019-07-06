@@ -24,9 +24,7 @@ public abstract class MixinGuiButton extends Gui {
     @Shadow public String displayString;
     @Shadow public boolean visible;
     @Shadow protected boolean hovered;
-
     @Shadow protected abstract void mouseDragged(Minecraft mc, int mouseX, int mouseY);
-
     @Shadow public boolean enabled;
 
     private double hoverFade;

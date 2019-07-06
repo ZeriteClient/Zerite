@@ -7,20 +7,19 @@ import net.zeriteclient.zerite.event.EventBus
 import net.zeriteclient.zerite.event.RenderTickEvent
 import net.zeriteclient.zerite.event.WorldLoadEvent
 import org.lwjgl.opengl.Display
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 
 
 object MixinMinecraftImpl {
 
-    fun runGameLoop(ci: CallbackInfo) {
+    fun runGameLoop() {
         EventBus.post(RenderTickEvent(ScaledResolution(Minecraft.getMinecraft())))
     }
 
-    fun loadWorld(worldClient: WorldClient?, message: String, ci: CallbackInfo) {
+    fun loadWorld(worldClient: WorldClient?, message: String) {
         EventBus.post(WorldLoadEvent(worldClient ?: Minecraft.getMinecraft().theWorld ?: return, message))
     }
 
-    fun toggleFullscreen(ci: CallbackInfo) {
+    fun toggleFullscreen() {
         Display.setResizable(false)
         Display.setResizable(true)
     }

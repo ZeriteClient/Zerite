@@ -8,6 +8,8 @@ import net.minecraft.util.ResourceLocation
 import net.zeriteclient.zerite.util.other.TimeUtil
 import org.lwjgl.opengl.GL11
 import org.newdawn.slick.Color
+import kotlin.math.max
+import kotlin.math.min
 
 class IconButton(
     buttonId: Int,
@@ -30,10 +32,7 @@ class IconButton(
         }
 
         // Animation
-        hoverFade = if (hovered) Math.min(30.0, hoverFade + TimeUtil.delta / 6) else Math.max(
-            0.0,
-            hoverFade - TimeUtil.delta / 6
-        )
+        hoverFade = if (hovered) min(30.0, hoverFade + TimeUtil.delta / 6) else max(0.0, hoverFade - TimeUtil.delta / 6)
 
         // GL options
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
