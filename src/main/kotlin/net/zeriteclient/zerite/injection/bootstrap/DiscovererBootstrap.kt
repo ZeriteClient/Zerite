@@ -36,7 +36,7 @@ object DiscovererBootstrap {
         }
 
         bootstraps.sortByDescending { it.priority }
-        bootstraps.forEach(AbstractBootstrap::bootstrapTweaker)
+        bootstraps.forEach { it.bootstrapTweaker() }
     }
 
 }

@@ -20,7 +20,7 @@ import java.awt.*;
 @Mixin(GuiSlot.class)
 public abstract class MixinGuiSlot {
 
-    @Shadow protected boolean field_178041_q;
+    @Shadow protected boolean field_178041_q; // visible
     @Shadow protected int mouseX;
     @Shadow protected int mouseY;
     @Shadow protected abstract int getScrollBarX();
@@ -32,18 +32,18 @@ public abstract class MixinGuiSlot {
     @Shadow protected int width;
     @Shadow public abstract int getListWidth();
     @Shadow protected boolean hasListHeader;
-    @Shadow protected abstract void drawListHeader(int p_148129_1_, int p_148129_2_, Tessellator p_148129_3_);
+    @Shadow protected abstract void drawListHeader(int p_148129_1_, int p_148129_2_, Tessellator p_148129_3_); // insideLeft insideTop tessellator
     @Shadow protected int height;
-    @Shadow public abstract int func_148135_f();
+    @Shadow public abstract int func_148135_f(); // getMaxScroll
     @Shadow protected abstract int getContentHeight();
-    @Shadow protected abstract void func_148142_b(int p_148142_1_, int p_148142_2_);
+    @Shadow protected abstract void func_148142_b(int p_148142_1_, int p_148142_2_); // renderDecorations (mouseXIn, mouseYIn)
     @Shadow protected abstract int getSize();
     @Shadow @Final protected int slotHeight;
     @Shadow protected int headerPadding;
-    @Shadow protected abstract void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_);
+    @Shadow protected abstract void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_); // updateItemPos (entryID, insideLeft, yPos)
     @Shadow protected boolean showSelectionBox;
     @Shadow protected abstract boolean isSelected(int slotIndex);
-    @Shadow protected abstract void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn);
+    @Shadow protected abstract void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn); // insideLeft yPos insideSlotHeight
 
     /**
      * @author Koding

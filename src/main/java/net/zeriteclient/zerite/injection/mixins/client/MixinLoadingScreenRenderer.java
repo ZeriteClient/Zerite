@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import net.zeriteclient.zerite.injection.mixinsimp.client.gui.MixinGuiScreenImpl;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,26 +29,26 @@ public class MixinLoadingScreenRenderer {
      */
     @Overwrite
     public void setLoadingProgress(int progress) {
-        long i = Minecraft.getSystemTime();
+        long nanoTime = Minecraft.getSystemTime();
 
-        if (i - this.systemTime >= 100L) {
-            this.systemTime = i;
+        if (nanoTime - this.systemTime >= 100L) {
+            this.systemTime = nanoTime;
             ScaledResolution scaledresolution = new ScaledResolution(this.mc);
-            int j = scaledresolution.getScaleFactor();
-            int k = scaledresolution.getScaledWidth();
-            int l = scaledresolution.getScaledHeight();
+            int scaleFactor = scaledresolution.getScaleFactor();
+            int scaledWidth = scaledresolution.getScaledWidth();
+            int scaledHeight = scaledresolution.getScaledHeight();
 
             if (OpenGlHelper.isFramebufferEnabled()) {
                 this.framebuffer.framebufferClear();
             } else {
-                GlStateManager.clear(256);
+                GlStateManager.clear(GL11.GL_ACCUM);
             }
 
             this.framebuffer.bindFramebuffer(false);
-            GlStateManager.matrixMode(5889);
+            GlStateManager.matrixMode(GL11.GL_PROJECTION);
             GlStateManager.loadIdentity();
             GlStateManager.ortho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 100.0D, 300.0D);
-            GlStateManager.matrixMode(5888);
+            GlStateManager.matrixMode(GL11.GL_MODELVIEW);
             GlStateManager.loadIdentity();
             GlStateManager.translate(0.0F, 0.0F, -200.0F);
 
@@ -57,35 +58,35 @@ public class MixinLoadingScreenRenderer {
 
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            MixinGuiScreenImpl.INSTANCE.drawWorldBackground(-1, k, l);
+            MixinGuiScreenImpl.INSTANCE.drawWorldBackground(-1, scaledWidth, scaledHeight);
 
             if (progress >= 0) {
-                int i1 = 100;
-                int j1 = 2;
-                int k1 = k / 2 - i1 / 2;
-                int l1 = l / 2 + 16;
+                int maxLoadingProgress = 100;
+                int barTop = 2;
+                int barWidth = scaledWidth / 2 - maxLoadingProgress / 2;
+                int barHeight = scaledHeight / 2 + 16;
                 GlStateManager.disableTexture2D();
                 worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                worldrenderer.pos((double) k1, (double) l1, 0.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos((double) k1, (double) (l1 + j1), 0.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos((double) (k1 + i1), (double) (l1 + j1), 0.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos((double) (k1 + i1), (double) l1, 0.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos((double) k1, (double) l1, 0.0D).color(128, 255, 128, 255).endVertex();
-                worldrenderer.pos((double) k1, (double) (l1 + j1), 0.0D).color(128, 255, 128, 255).endVertex();
-                worldrenderer.pos((double) (k1 + progress), (double) (l1 + j1), 0.0D).color(128, 255, 128, 255).endVertex();
-                worldrenderer.pos((double) (k1 + progress), (double) l1, 0.0D).color(128, 255, 128, 255).endVertex();
+                worldrenderer.pos(barWidth, barHeight, 0.0D).color(128, 128, 128, 255).endVertex();
+                worldrenderer.pos(barWidth, barHeight + barTop, 0.0D).color(128, 128, 128, 255).endVertex();
+                worldrenderer.pos(barWidth + maxLoadingProgress, barHeight + barTop, 0.0D).color(128, 128, 128, 255).endVertex();
+                worldrenderer.pos(barWidth + maxLoadingProgress, barHeight, 0.0D).color(128, 128, 128, 255).endVertex();
+                worldrenderer.pos(barWidth, barHeight, 0.0D).color(128, 255, 128, 255).endVertex();
+                worldrenderer.pos(barWidth, barHeight + barTop, 0.0D).color(128, 255, 128, 255).endVertex();
+                worldrenderer.pos(barWidth + progress, barHeight + barTop, 0.0D).color(128, 255, 128, 255).endVertex();
+                worldrenderer.pos(barWidth + progress, barHeight, 0.0D).color(128, 255, 128, 255).endVertex();
                 tessellator.draw();
                 GlStateManager.enableTexture2D();
             }
 
             GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-            this.mc.fontRendererObj.drawStringWithShadow(this.currentlyDisplayedText, (float) ((k - this.mc.fontRendererObj.getStringWidth(this.currentlyDisplayedText)) / 2), (float) (l / 2 - 4 - 16), 16777215);
-            this.mc.fontRendererObj.drawStringWithShadow(this.message, (float) ((k - this.mc.fontRendererObj.getStringWidth(this.message)) / 2), (float) (l / 2 - 4 + 8), 16777215);
+            GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+            this.mc.fontRendererObj.drawStringWithShadow(this.currentlyDisplayedText, (float) ((scaledWidth - this.mc.fontRendererObj.getStringWidth(this.currentlyDisplayedText)) / 2), (float) (scaledHeight / 2 - 4 - 16), 16777215);
+            this.mc.fontRendererObj.drawStringWithShadow(this.message, (float) ((scaledWidth - this.mc.fontRendererObj.getStringWidth(this.message)) / 2), (float) (scaledHeight / 2 - 4 + 8), 16777215);
             this.framebuffer.unbindFramebuffer();
 
             if (OpenGlHelper.isFramebufferEnabled()) {
-                this.framebuffer.framebufferRender(k * j, l * j);
+                this.framebuffer.framebufferRender(scaledWidth * scaleFactor, scaledHeight * scaleFactor);
             }
 
             this.mc.updateDisplay();

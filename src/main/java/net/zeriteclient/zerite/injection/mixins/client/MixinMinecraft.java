@@ -35,6 +35,7 @@ import net.zeriteclient.zerite.game.gui.SplashRenderer;
 import net.zeriteclient.zerite.injection.bootstrap.ZeriteBootstrap;
 import net.zeriteclient.zerite.injection.mixinsimp.client.MixinMinecraftImpl;
 import net.zeriteclient.zerite.injection.mixinsimp.client.StatStringFormatterImpl;
+import net.zeriteclient.zerite.util.ZeriteMetadata;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -229,6 +230,7 @@ public abstract class MixinMinecraft {
         Display.setTitle("Zerite Client");
         EventBus.INSTANCE.post(new ClientStartEvent());
         ZeriteBootstrap.INSTANCE.beginClientInit();
+        ((IMixinMinecraft) this).setEnableGLErrorChecking(false);
 
         if (this.serverName != null) {
             this.displayGuiScreen(
@@ -262,18 +264,16 @@ public abstract class MixinMinecraft {
     @Overwrite
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
-        Display.setTitle("Zerite [INITIALIZING] | Beta B1");
+        Display.setTitle("Zerite [INITIALIZING] | " + ZeriteMetadata.getZeriteVersion());
 
         try {
             Display.create((new PixelFormat()).withDepthBits(24).withStencilBits(1));
         } catch (LWJGLException lwjglexception) {
-            logger.error("Couldn\'t set pixel format", lwjglexception);
+            logger.error("Couldn't set pixel format", lwjglexception);
 
             try {
                 Thread.sleep(1000L);
-            } catch (InterruptedException ignored) {
-
-            }
+            } catch (InterruptedException ignored) { }
 
             if (this.fullscreen) {
                 this.updateDisplayMode();

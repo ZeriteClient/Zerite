@@ -27,7 +27,7 @@ object EventBus {
             )
         }
 
-        subscribers.sortByDescending(EventSubscriber::priority)
+        subscribers.sortByDescending { it.priority }
         registeredEventClasses.replace(obj.javaClass, subscribers)
     }
 

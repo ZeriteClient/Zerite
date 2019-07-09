@@ -4,9 +4,11 @@
   "refmap": "refmap.mixins.zerite.json",
   "required": true,
   "mixins": [
+    "block.MixinBlockGlass",
     "client.MixinClientBrandRetriever",
     "client.MixinLoadingScreenRenderer",
     "client.MixinMinecraft",
+    "client.IMixinMinecraft",
     "client.entity.MixinEntityPlayerSP",
     "client.gui.MixinGuiButton",
     "client.gui.MixinGuiIngame",
@@ -14,6 +16,7 @@
     "client.gui.MixinGuiSlot",
     "client.network.MixinNetHandlerPlayClient",
     "client.shader.MixinFramebuffer",
+    "crash.MixinCrashReportCategory",
     "entity.MixinEntity",
     "entity.MixinEntityLivingBase",
     "util.MixinScreenShotHelper"
