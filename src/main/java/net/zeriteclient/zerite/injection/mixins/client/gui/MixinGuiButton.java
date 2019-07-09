@@ -44,8 +44,8 @@ public abstract class MixinGuiButton extends Gui {
         this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition
                 && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
         GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.blendFunc(770, 771);
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         this.mouseDragged(mc, mouseX, mouseY);
 
         ShapeUtil.INSTANCE.drawFilledRoundedRectangle(xPosition, yPosition, width, height, 3,

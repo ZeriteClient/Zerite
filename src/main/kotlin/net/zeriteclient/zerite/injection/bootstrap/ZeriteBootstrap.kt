@@ -10,17 +10,17 @@ object ZeriteBootstrap {
         stage = EnumStage.GAME_CREATE
 
         bootstrapList.addAll(DiscovererBootstrap.bootstraps)
-        bootstrapList.forEach(AbstractBootstrap::bootstrapGameCreate)
+        bootstrapList.forEach { it.bootstrapGameCreate() }
     }
 
     fun beginClientInit() {
         stage = EnumStage.CLIENT_INIT
-        bootstrapList.forEach(AbstractBootstrap::bootstrapClientInit)
+        bootstrapList.forEach { it.bootstrapClientInit() }
     }
 
     fun beginClientShutdown() {
         stage = EnumStage.CLIENT_SHUTDOWN
-        bootstrapList.forEach(AbstractBootstrap::bootstrapClientShutdown)
+        bootstrapList.forEach { it.bootstrapClientShutdown() }
     }
 
     inline fun <reified T : AbstractBootstrap> getBootstrap(): T =
