@@ -37,16 +37,17 @@ object ShapeUtil {
         GlStateManager.pushAttrib()
         GlStateManager.pushMatrix()
 
-        GL11.glEnable(GL11.GL_LINE_SMOOTH)
-        GL11.glEnable(GL11.GL_POLYGON_SMOOTH)
-        GL11.glEnable(GL11.GL_POINT_SMOOTH)
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
-        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST)
-        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST)
+//        GL11.glEnable(GL11.GL_LINE_SMOOTH)
+//        GL11.glEnable(GL11.GL_POLYGON_SMOOTH)
+//        GL11.glEnable(GL11.GL_POINT_SMOOTH)
+//        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
+//        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST)
+//        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST)
 
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
         GlStateManager.blendFunc(770, 771)
+        GlStateManager.enableTexture2D()
         GlStateManager.disableTexture2D()
     }
 
@@ -54,9 +55,9 @@ object ShapeUtil {
         GlStateManager.enableTexture2D()
         GlStateManager.disableBlend()
 
-        GL11.glDisable(GL11.GL_LINE_SMOOTH)
-        GL11.glDisable(GL11.GL_POLYGON_SMOOTH)
-        GL11.glDisable(GL11.GL_POINT_SMOOTH)
+//        GL11.glDisable(GL11.GL_LINE_SMOOTH)
+//        GL11.glDisable(GL11.GL_POLYGON_SMOOTH)
+//        GL11.glDisable(GL11.GL_POINT_SMOOTH)
 
         GlStateManager.popAttrib()
         GlStateManager.popMatrix()
@@ -174,7 +175,7 @@ object ShapeUtil {
      * @param color [Integer] The color int
      */
     private fun drawFilledArc(
-        cx: Double, cy: Double, radius: Int, segments: Int, start: Float,
+        cx: Double, cy: Double, radius: Int, segments: Int = 10, start: Float,
         angle: Float,
         color: Int
     ) {
@@ -186,14 +187,14 @@ object ShapeUtil {
 
         bindColor(color)
         GL11.glBegin(GL11.GL_TRIANGLE_FAN)
-        GL11.glVertex2d(cx, cy)
+        GL11.glVertex2f(cx.toFloat(), cy.toFloat())
 
         for (i in 0 until segments) {
             val calc = deg - theta * i
             val xInner = radius * cos(calc) + cx
             val yInner = radius * sin(calc) + cy
 
-            GL11.glVertex2d(xInner, yInner)
+            GL11.glVertex2f(xInner.toFloat(), yInner.toFloat())
         }
 
         GL11.glEnd()
@@ -232,10 +233,10 @@ object ShapeUtil {
         // Draw the circles in the corners
 //        drawArc((x + radius), (y + radius), radius, 50, 270f, 90f, color)
 //        drawArc((x + width - radius), (y + radius), radius, 50, 270f, 90f, color)
-        drawFilledArc((x + radius).toDouble(), (y + radius).toDouble(), radius, 50, 270f, 90f, color)
-        drawFilledArc((x + width - radius).toDouble(), (y + radius).toDouble(), radius, 50, 0f, 90f, color)
-        drawFilledArc((x + radius).toDouble(), (y + height - radius).toDouble(), radius, 50, 180f, 90f, color)
-        drawFilledArc((x + width - radius).toDouble(), (y + height - radius).toDouble(), radius, 50, 90f, 90f, color)
+        drawFilledArc((x + radius).toDouble(), (y + radius).toDouble(), radius, 10, 270f, 90f, color)
+        drawFilledArc((x + width - radius).toDouble(), (y + radius).toDouble(), radius, 10, 0f, 90f, color)
+        drawFilledArc((x + radius).toDouble(), (y + height - radius).toDouble(), radius, 10, 180f, 90f, color)
+        drawFilledArc((x + width - radius).toDouble(), (y + height - radius).toDouble(), radius, 10, 90f, 90f, color)
 
         // GL options
 //        postDraw()

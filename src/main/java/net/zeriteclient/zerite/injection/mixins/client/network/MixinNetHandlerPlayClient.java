@@ -29,8 +29,7 @@ import java.util.List;
 @Mixin(NetHandlerPlayClient.class)
 public class MixinNetHandlerPlayClient {
 
-    @Shadow(aliases = "gameController")
-    private Minecraft client;
+    private Minecraft gameController;
 
     @Inject(method = "handleChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;printChatMessage(Lnet/minecraft/util/IChatComponent;)V", shift = At.Shift.BEFORE), cancellable = true)
     private void handleChat(S02PacketChat packetIn, CallbackInfo ci) {
@@ -45,7 +44,7 @@ public class MixinNetHandlerPlayClient {
         // Check thread
         PacketThreadUtil
                 .checkThreadAndEnqueue(packetIn, Minecraft.getMinecraft().thePlayer.sendQueue,
-                        this.client);
+                        this.gameController);
 
         // Create basic options
         List<String> options = new ArrayList<>(Arrays.asList(packetIn.func_149630_c()));
@@ -103,12 +102,15 @@ public class MixinNetHandlerPlayClient {
                                     // Check if string starts with
                                     if (CommandBase.doesStringStartWith(s, alias)) {
                                         // Check for chat GUI
-                                        if (this.client.currentScreen instanceof GuiChat) {
+                                        if (this.gameController.currentScreen instanceof GuiChat) {
                                             // Cast from current screen
-                                            GuiChat guichat = (GuiChat) this.client.currentScreen;
+                                            GuiChat guichat = (GuiChat) this.gameController.currentScreen;
+
+                                            String[] droppedStr = new String[aString.length - 1];
+                                            System.arraycopy(aString, 1, droppedStr, 0, aString.length - 1);
 
                                             // Return response
-                                            guichat.onAutocompleteResponse(c.addTabCompletionOptions(dropFirstString(aString), Minecraft.getMinecraft().thePlayer.playerLocation));
+                                            guichat.onAutocompleteResponse(c.addTabCompletionOptions(droppedStr, Minecraft.getMinecraft().thePlayer.playerLocation));
                                         }
                                         return;
                                     }
@@ -123,22 +125,10 @@ public class MixinNetHandlerPlayClient {
         }
 
         // Fallback
-        if (this.client.currentScreen instanceof GuiChat) {
-            GuiChat guichat = (GuiChat) this.client.currentScreen;
+        if (this.gameController.currentScreen instanceof GuiChat) {
+            GuiChat guichat = (GuiChat) this.gameController.currentScreen;
             guichat.onAutocompleteResponse(options.toArray(new String[0]));
         }
-    }
-
-    /**
-     * Removes the first element in an array
-     *
-     * @param input {@link String[]} The input array
-     * @return {@link String[]} The output shortened array
-     */
-    private static String[] dropFirstString(String[] input) {
-        String[] aString = new String[input.length - 1];
-        System.arraycopy(input, 1, aString, 0, input.length - 1);
-        return aString;
     }
 
 }
