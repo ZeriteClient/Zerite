@@ -19,9 +19,7 @@ object GuiZeriteSettings : GuiScreen() {
 
     private var ordered = false
 
-    val groups = hashMapOf(
-        EnumSettingCategory.MODS to SettingGroup("Mods", ResourceLocation("textures/icons/settings.png"))
-    )
+    val groups = EnumSettingCategory.values().map { it to SettingGroup(it.display, it.icon) }.toMap()
 
     /**
      * The controller for what elements are added to a menu

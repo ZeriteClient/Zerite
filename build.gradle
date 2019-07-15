@@ -67,6 +67,7 @@ dependencies {
 
     compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
     embed('com.github.Zerite:Installer:63668e5a3a') {
+//    embed('net.zeriteclient:Installer:0.1-PRE') {
         exclude module: 'kotlin-reflect'
         exclude module: 'gson'
         exclude module: 'javax.json'

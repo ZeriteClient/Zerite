@@ -58,7 +58,7 @@ public class MixinLoadingScreenRenderer {
 
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            MixinGuiScreenImpl.INSTANCE.drawWorldBackground(-1, scaledWidth, scaledHeight);
+            MixinGuiScreenImpl.INSTANCE.drawWorldBackground(Integer.MAX_VALUE, scaledWidth, scaledHeight);
 
             if (progress >= 0) {
                 int maxLoadingProgress = 100;
