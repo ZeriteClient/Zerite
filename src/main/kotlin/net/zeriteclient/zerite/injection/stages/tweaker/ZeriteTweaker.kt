@@ -28,8 +28,6 @@ class ZeriteTweaker : ITweaker {
         classLoader.addClassLoaderExclusion("net.zeriteclient.zerite.injection.bootstrap.AbstractBootstrap")
         classLoader.addTransformerExclusion("net.zeriteclient.zerite.injection.bootstrap.")
 
-        classLoader.registerTransformer("net.zeriteclient.zerite.injection.stages.asm.access.ZeriteAccessTransformer")
-
         MixinBootstrap.init()
         Mixins.addConfiguration("mixins.zerite.json")
 

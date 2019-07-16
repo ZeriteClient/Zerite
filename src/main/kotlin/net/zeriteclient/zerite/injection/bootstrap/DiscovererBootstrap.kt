@@ -1,13 +1,11 @@
 package net.zeriteclient.zerite.injection.bootstrap
 
 import net.minecraft.launchwrapper.Launch
-import net.zeriteclient.zerite.injection.stages.asm.access.ZeriteAccessTransformer
 import net.zeriteclient.zerite.util.other.ReflectionUtil
 import net.zeriteclient.zerite.util.other.StorageUtil
 import org.apache.logging.log4j.LogManager
 import java.net.URL
 import java.net.URLClassLoader
-import java.util.jar.JarFile
 
 object DiscovererBootstrap {
     val bootstraps: ArrayList<AbstractBootstrap> = arrayListOf()
@@ -26,8 +24,6 @@ object DiscovererBootstrap {
         bootstrapDir.listFiles().filter { it.isFile && it.name.endsWith(".jar", true) }.forEach {
             logger.info("Discovered bootstrap file: ${it.name}")
             injectUrls.add(it.toURI().toURL())
-
-            ZeriteAccessTransformer.addJar(JarFile(it))
         }
 
         injectClassLoader = URLClassLoader(injectUrls.toTypedArray(), classLoader)
