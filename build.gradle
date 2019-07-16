@@ -67,7 +67,6 @@ dependencies {
 
     compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
     embed('com.github.Zerite:Installer:63668e5a3a') {
-//    embed('net.zeriteclient:Installer:0.1-PRE') {
         exclude module: 'kotlin-reflect'
         exclude module: 'gson'
         exclude module: 'javax.json'
@@ -100,7 +99,6 @@ jar {
             'Main-Class': 'net.zeriteclient.zerite.util.wrappers.InstallerWrapper',
             'TweakClass': 'net.zeriteclient.zerite.injection.stages.tweaker.ZeriteTweaker',
             'MixinConfigs': 'mixins.zerite.json',
-            'AT': 'Zerite_at.cfg',
             'Manifest-Version': 1.0,
             'TweakOrder': 0
     )
@@ -127,10 +125,6 @@ mixin {
 
 compileKotlin {
     kotlinOptions.jvmTarget = '1.8'
-}
-
-processResources {
-    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 task copySrg(type: Copy, dependsOn: 'genSrgs') {
