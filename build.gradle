@@ -88,8 +88,6 @@ minecraft {
     runDir = 'run'
     makeObfSourceJar = false
     useDepAts = true
-
-    ats("src/main/resources/Zerite_at.cfg")
 }
 
 jar {
