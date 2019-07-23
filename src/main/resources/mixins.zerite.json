@@ -13,6 +13,7 @@
     "client.entity.MixinEntityPlayerSP",
     "client.gui.MixinGuiButton",
     "client.gui.MixinGuiIngame",
+    "client.gui.MixinGuiNewChat",
     "client.gui.MixinGuiScreen",
     "client.gui.MixinGuiSlot",
     "client.network.MixinNetHandlerPlayClient",
