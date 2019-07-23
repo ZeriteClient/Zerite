@@ -8,6 +8,7 @@ import net.zeriteclient.zerite.game.tools.font.ZeriteFonts
 import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.ConfigSettings
 import net.zeriteclient.zerite.injection.bootstrap.impl.annotations.Instance
 import net.zeriteclient.zerite.injection.bootstrap.impl.configuration.StoreConfig
+import net.zeriteclient.zerite.injection.mixins.client.settings.IMixinKeyBinding
 import java.awt.Color
 
 @Instance(registerConfig = true, registerEvents = true)
@@ -19,11 +20,8 @@ object ToggleSprintMod {
 
     @Subscribe
     private fun onTick(e: TickEvent) {
-        val player = Minecraft.getMinecraft().thePlayer ?: return
-
-        if (player.moveForward > 0 && player.moveStrafing == 0.0f && toggled) {
-            player.isSprinting = true
-        }
+        if (toggled)
+            (Minecraft.getMinecraft().gameSettings.keyBindSprint as IMixinKeyBinding).setPressed(true)
     }
 
     @Subscribe
