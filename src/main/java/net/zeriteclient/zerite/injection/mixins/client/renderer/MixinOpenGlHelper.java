@@ -12,7 +12,7 @@ public class MixinOpenGlHelper {
 
     @Inject(method = "setLightmapTextureCoords", at = @At("RETURN"))
     private static void setLastValues(int target, float brightnessX, float brightnessY, CallbackInfo ci) {
-        MixinOpenGlHelperImpl.INSTANCE.setLastBrightnessX(brightnessX);
-        MixinOpenGlHelperImpl.INSTANCE.setLastBrightnessY(brightnessY);
+        MixinOpenGlHelperImpl.Companion.setLastBrightnessX(brightnessX);
+        MixinOpenGlHelperImpl.Companion.setLastBrightnessY(brightnessY);
     }
 }

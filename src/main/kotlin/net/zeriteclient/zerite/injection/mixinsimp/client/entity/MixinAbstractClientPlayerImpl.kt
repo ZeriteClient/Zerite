@@ -6,10 +6,12 @@ import net.minecraft.world.World
 import net.zeriteclient.zerite.event.EventBus
 import net.zeriteclient.zerite.event.PlayerInitEvent
 
-object MixinAbstractClientPlayerImpl {
+class MixinAbstractClientPlayerImpl(
+    val impl: AbstractClientPlayer
+) {
 
-    fun init(abstractClientPlayer: AbstractClientPlayer, worldIn: World, playerProfile: GameProfile) {
-        EventBus.post(PlayerInitEvent(abstractClientPlayer, worldIn, playerProfile))
+    fun init(worldIn: World, playerProfile: GameProfile) {
+        EventBus.post(PlayerInitEvent(impl, worldIn, playerProfile))
     }
 
 }

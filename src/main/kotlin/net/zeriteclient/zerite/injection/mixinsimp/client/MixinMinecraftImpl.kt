@@ -9,14 +9,16 @@ import net.zeriteclient.zerite.event.WorldLoadEvent
 import org.lwjgl.opengl.Display
 
 
-object MixinMinecraftImpl {
+class MixinMinecraftImpl(
+    val impl: Minecraft
+) {
 
     fun runGameLoop() {
-        EventBus.post(RenderTickEvent(ScaledResolution(Minecraft.getMinecraft())))
+        EventBus.post(RenderTickEvent(ScaledResolution(impl)))
     }
 
     fun loadWorld(worldClient: WorldClient?, message: String) {
-        EventBus.post(WorldLoadEvent(worldClient ?: Minecraft.getMinecraft().theWorld ?: return, message))
+        EventBus.post(WorldLoadEvent(worldClient ?: impl.theWorld ?: return, message))
     }
 
     fun toggleFullscreen() {

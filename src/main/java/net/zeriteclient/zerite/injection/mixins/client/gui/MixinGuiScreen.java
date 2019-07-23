@@ -6,9 +6,6 @@ import net.zeriteclient.zerite.injection.mixinsimp.client.gui.MixinGuiScreenImpl
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiScreen.class)
 public abstract class MixinGuiScreen extends Gui {
@@ -16,11 +13,13 @@ public abstract class MixinGuiScreen extends Gui {
     @Shadow public int width;
     @Shadow public int height;
 
+    private MixinGuiScreenImpl impl = new MixinGuiScreenImpl((GuiScreen) (Object) this);
+
     /**
      * @author Koding
      */
     @Overwrite
     public void drawWorldBackground(int tint) {
-        MixinGuiScreenImpl.INSTANCE.drawWorldBackground(tint, width, height);
+        impl.drawWorldBackground(tint, width, height);
     }
 }

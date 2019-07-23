@@ -16,7 +16,6 @@ import net.zeriteclient.zerite.injection.mixinsimp.client.network.MixinNetHandle
 import net.zeriteclient.zerite.util.other.ReflectionUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -31,9 +30,11 @@ public class MixinNetHandlerPlayClient {
 
     private Minecraft gameController;
 
+    private MixinNetHandlerPlayClientImpl impl = new MixinNetHandlerPlayClientImpl((NetHandlerPlayClient) (Object) this);
+
     @Inject(method = "handleChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;printChatMessage(Lnet/minecraft/util/IChatComponent;)V", shift = At.Shift.BEFORE), cancellable = true)
     private void handleChat(S02PacketChat packetIn, CallbackInfo ci) {
-        MixinNetHandlerPlayClientImpl.INSTANCE.handleChat(packetIn, ci);
+        impl.handleChat(packetIn, ci);
     }
 
     /**

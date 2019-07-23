@@ -1,8 +1,14 @@
 package net.zeriteclient.zerite.injection.mixinsimp.client.renderer
 
-object MixinOpenGlHelperImpl {
+import net.minecraft.client.renderer.OpenGlHelper
 
-    var lastBrightnessX = 0.0f
-    var lastBrightnessY = 0.0f
+class MixinOpenGlHelperImpl(
+    val impl: OpenGlHelper
+) {
+
+    companion object {
+        var lastBrightnessX = 0.0f
+        var lastBrightnessY = 0.0f
+    }
 
 }

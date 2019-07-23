@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
-import net.zeriteclient.zerite.injection.mixinsimp.client.gui.MixinGuiScreenImpl;
+import net.zeriteclient.zerite.util.rendering.GuiUtil;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -58,7 +58,7 @@ public class MixinLoadingScreenRenderer {
 
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            MixinGuiScreenImpl.INSTANCE.drawWorldBackground(Integer.MAX_VALUE, scaledWidth, scaledHeight);
+            GuiUtil.INSTANCE.drawBackground(scaledWidth, scaledHeight, true);
 
             if (progress >= 0) {
                 int maxLoadingProgress = 100;

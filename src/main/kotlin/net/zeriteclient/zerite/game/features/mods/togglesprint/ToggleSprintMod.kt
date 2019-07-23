@@ -18,10 +18,19 @@ object ToggleSprintMod {
     @StoreConfig("Toggled")
     var toggled: Boolean = false
 
+    private var prev = toggled
+
     @Subscribe
     private fun onTick(e: TickEvent) {
+        val sprintKeyBind = Minecraft.getMinecraft().gameSettings.keyBindSprint as IMixinKeyBinding
+
+        if (prev != toggled) {
+            prev = toggled
+            sprintKeyBind.setPressed(false)
+        }
+
         if (toggled)
-            (Minecraft.getMinecraft().gameSettings.keyBindSprint as IMixinKeyBinding).setPressed(true)
+            sprintKeyBind.setPressed(true)
     }
 
     @Subscribe

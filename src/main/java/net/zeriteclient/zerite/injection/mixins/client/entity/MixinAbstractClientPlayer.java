@@ -20,9 +20,11 @@ public abstract class MixinAbstractClientPlayer {
     @Shadow
     protected abstract NetworkPlayerInfo getPlayerInfo();
 
+    private MixinAbstractClientPlayerImpl impl = new MixinAbstractClientPlayerImpl((AbstractClientPlayer) (Object) this);
+
     @Inject(method = "<init>", at = @At("RETURN"))
     private void init(World worldIn, GameProfile playerProfile, CallbackInfo ci) {
-        MixinAbstractClientPlayerImpl.INSTANCE.init((AbstractClientPlayer) (Object) this, worldIn, playerProfile);
+        impl.init(worldIn, playerProfile);
     }
 
     /**

@@ -16,6 +16,7 @@
     "client.gui.MixinGuiScreen",
     "client.gui.MixinGuiSlot",
     "client.network.MixinNetHandlerPlayClient",
+    "client.network.play.server.MixinS2EPacketCloseWindow",
     "client.settings.IMixinKeyBinding",
     "client.shader.MixinFramebuffer",
     "crash.MixinCrashReportCategory",

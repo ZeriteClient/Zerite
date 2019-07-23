@@ -6,14 +6,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
-import net.zeriteclient.zerite.injection.mixinsimp.client.gui.MixinGuiScreenImpl;
+import net.zeriteclient.zerite.util.rendering.GuiUtil;
 import net.zeriteclient.zerite.util.rendering.ShapeUtil;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
 
@@ -54,7 +53,7 @@ public abstract class MixinGuiSlot {
             this.mouseX = mouseXIn;
             this.mouseY = mouseYIn;
 
-            MixinGuiScreenImpl.INSTANCE.drawWorldBackground(0, width, height);
+            GuiUtil.INSTANCE.drawBackground(width, height, false);
 
             int i = this.getScrollBarX();
             int j = i + 6;
@@ -105,10 +104,10 @@ public abstract class MixinGuiSlot {
                 }
 
                 worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                worldrenderer.pos((double) i, (double) (l1 + k1), 0.0D).color(255, 255, 255, 100).endVertex();
-                worldrenderer.pos((double) j, (double) (l1 + k1), 0.0D).color(255, 255, 255, 100).endVertex();
-                worldrenderer.pos((double) j, (double) l1, 0.0D).color(255, 255, 255, 100).endVertex();
-                worldrenderer.pos((double) i, (double) l1, 0.0D).color(255, 255, 255, 100).endVertex();
+                worldrenderer.pos(i, l1 + k1, 0.0D).color(255, 255, 255, 100).endVertex();
+                worldrenderer.pos(j, l1 + k1, 0.0D).color(255, 255, 255, 100).endVertex();
+                worldrenderer.pos(j, l1, 0.0D).color(255, 255, 255, 100).endVertex();
+                worldrenderer.pos(i, l1, 0.0D).color(255, 255, 255, 100).endVertex();
                 tessellator.draw();
             }
 

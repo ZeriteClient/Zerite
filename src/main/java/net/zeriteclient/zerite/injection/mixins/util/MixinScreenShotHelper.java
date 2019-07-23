@@ -13,12 +13,14 @@ import java.io.File;
 @Mixin(ScreenShotHelper.class)
 public abstract class MixinScreenShotHelper {
 
+    private MixinScreenShotHelperImpl impl = new MixinScreenShotHelperImpl((ScreenShotHelper) (Object) this);
+
     /**
      * @author Koding
      */
     @Overwrite
     public static IChatComponent saveScreenshot(File gameDirectory, int width, int height, Framebuffer buffer) {
-        MixinScreenShotHelperImpl.INSTANCE.saveScreenshot(gameDirectory, width, height, buffer);
+        MixinScreenShotHelperImpl.Companion.saveScreenshot(gameDirectory, width, height, buffer);
         return ChatUtil.INSTANCE.createComponent("Saving screenshot...");
     }
 }
