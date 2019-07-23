@@ -1,9 +1,12 @@
 package net.zeriteclient.zerite.event
 
+import com.mojang.authlib.GameProfile
+import net.minecraft.client.entity.AbstractClientPlayer
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.multiplayer.WorldClient
 import net.minecraft.util.IChatComponent
+import net.minecraft.world.World
 import java.lang.reflect.Method
 
 abstract class Event
@@ -27,3 +30,8 @@ class TickEvent : Event()
 class GuiDisplayEvent(val guiScreen: GuiScreen?) : Event()
 class RenderTickEvent(val scaledResolution: ScaledResolution) : Event()
 class WorldLoadEvent(val worldClient: WorldClient, val message: String) : Event()
+class PlayerInitEvent(
+    val abstractClientPlayer: AbstractClientPlayer,
+    val world: World,
+    val playerProfile: GameProfile
+) : Event()

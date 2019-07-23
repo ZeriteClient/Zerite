@@ -5,10 +5,11 @@
   "required": true,
   "mixins": [
     "block.MixinBlockGlass",
+    "client.IMixinMinecraft",
     "client.MixinClientBrandRetriever",
     "client.MixinLoadingScreenRenderer",
     "client.MixinMinecraft",
-    "client.IMixinMinecraft",
+    "client.entity.MixinAbstractClientPlayer",
     "client.entity.MixinEntityPlayerSP",
     "client.gui.MixinGuiButton",
     "client.gui.MixinGuiIngame",
