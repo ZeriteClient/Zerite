@@ -3,7 +3,7 @@ jdk: openjdk8
 install:
   - 'chmod +x ./gradlew'
 script:
-  - 'bash gradlew changeMcVersion setupCiWorkspace build'
+  - 'bash gradlew changeMcVersion setupCiWorkspace build shadowJar'
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -16,7 +16,7 @@ before_deploy:
   - git config --global user.name "Koding Assistant"
   - export GIT_TAG=Beta-B$TRAVIS_BUILD_NUMBER
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - 'cp ./build/libs/Zerite-*.jar Zerite.jar'
+  - 'cp ./build/libs/Zerite-shaded*.jar Zerite.jar'
 deploy:
   provider: releases
   api_key:

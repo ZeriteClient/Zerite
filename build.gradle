@@ -102,6 +102,21 @@ jar {
             'TweakOrder': 0
     )
 
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}
+
+mixin {
+    defaultObfuscationEnv notch
+    add sourceSets.main, 'refmap.mixins.zerite.json'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+task shadowJar(type: Jar) {
+    baseName = 'Zerite-shaded'
+
     from {
         configurations.embed.collect {
             it.isDirectory() ? it : zipTree(it)
@@ -114,16 +129,7 @@ jar {
         }
     }
 
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-}
-
-mixin {
-    defaultObfuscationEnv notch
-    add sourceSets.main, 'refmap.mixins.zerite.json'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = '1.8'
+    with jar
 }
 
 task copySrg(type: Copy, dependsOn: 'genSrgs') {
