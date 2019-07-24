@@ -1,6 +1,6 @@
 {
   "compatibilityLevel": "JAVA_8",
-  "package": "net.zeriteclient.zerite.injection.mixins",
+  "package": "cc.zerite.client.injection.mixins",
   "refmap": "refmap.mixins.zerite.json",
   "required": true,
   "mixins": [

@@ -85,7 +85,7 @@ dependencies {
 minecraft {
     version = '1.8.9'
     mappings = 'stable_22'
-    tweakClass = 'net.zeriteclient.zerite.injection.stages.tweaker.ZeriteTweaker'
+    tweakClass = 'cc.zerite.client.injection.stages.tweaker.ZeriteTweaker'
     runDir = 'run'
     makeObfSourceJar = false
     useDepAts = true
