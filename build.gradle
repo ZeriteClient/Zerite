@@ -95,8 +95,8 @@ jar {
     dependsOn configurations.compile
 
     manifest.attributes(
-            'Main-Class': 'net.zeriteclient.zerite.util.wrappers.InstallerWrapper',
-            'TweakClass': 'net.zeriteclient.zerite.injection.stages.tweaker.ZeriteTweaker',
+            'Main-Class': 'cc.zerite.client.util.wrappers.InstallerWrapper',
+            'TweakClass': 'cc.zerite.client.injection.stages.tweaker.ZeriteTweaker',
             'MixinConfigs': 'mixins.zerite.json',
             'Manifest-Version': 1.0,
             'TweakOrder': 0
@@ -149,6 +149,16 @@ task shadowJar(type: Jar) {
             exclude 'META-INF', 'META-INF/**'
         }
     }
+
+    manifest.attributes(
+            'Main-Class': 'cc.zerite.client.util.wrappers.InstallerWrapper',
+            'TweakClass': 'cc.zerite.client.injection.stages.tweaker.ZeriteTweaker',
+            'MixinConfigs': 'mixins.zerite.json',
+            'Manifest-Version': 1.0,
+            'TweakOrder': 0
+    )
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 
     with jar
 }
