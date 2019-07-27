@@ -3,7 +3,6 @@ package cc.zerite.client.game.gui.settings
 import cc.zerite.client.game.gui.settings.tab.SettingController
 import cc.zerite.client.game.gui.settings.tab.SettingGroup
 import cc.zerite.client.util.EnumBackground
-import cc.zerite.client.util.rendering.ShapeUtil
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiButton
@@ -11,7 +10,6 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
 import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
-import java.awt.Color
 import java.io.IOException
 
 object GuiZeriteSettings : GuiScreen() {
@@ -61,17 +59,17 @@ object GuiZeriteSettings : GuiScreen() {
             EnumBackground.BACKGROUND_1.bind()
             Gui.drawModalRectWithCustomSizedTexture(0, 0, 0.0f, 0.0f, width, height, width.toFloat(), height.toFloat())
         } else {
-            ShapeUtil.drawRectWithSize(0, 0, width, height, Color(0, 0, 0, 100).rgb)
+//            ShapeUtil.drawRectWithSize(0, 0, width, height, Color(0, 0, 0, 100).rgb)
         }
 
-        ShapeUtil.drawGradientRect(
-            0.0,
-            0.0,
-            width.toDouble(),
-            height.toDouble(),
-            Color(3, 169, 244, 20).rgb,
-            Color(2, 136, 209, 130).rgb
-        )
+//        ShapeUtil.drawGradientRect(
+//            0.0,
+//            0.0,
+//            width.toDouble(),
+//            height.toDouble(),
+//            Color(3, 169, 244, 20).rgb,
+//            Color(2, 136, 209, 130).rgb
+//        )
 
         controller.draw()
 

@@ -47,8 +47,7 @@ object ShapeUtil {
         GlStateManager.enableBlend()
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
         GlStateManager.blendFunc(770, 771)
-        GlStateManager.enableTexture2D()
-        GlStateManager.disableTexture2D()
+        GL11.glDisable(GL11.GL_TEXTURE_2D)
     }
 
     private fun postDraw() {
