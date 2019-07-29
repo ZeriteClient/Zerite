@@ -66,13 +66,13 @@ dependencies {
     embed group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.3.0-M1'
 
     embed "com.github.zerite:utils:9ed8a07484"
+    embed('com.github.Zerite:Installer:47b4ff5ba0') {
+        exclude module: 'kotlin-reflect'
+        exclude module: 'gson'
+        exclude module: 'javax.json'
+    }
 
     if (System.env["JITPACK"] == null) {
-        embed('com.github.Zerite:Installer:47b4ff5ba0') {
-            exclude module: 'kotlin-reflect'
-            exclude module: 'gson'
-            exclude module: 'javax.json'
-        }
         embed group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
     }
 
