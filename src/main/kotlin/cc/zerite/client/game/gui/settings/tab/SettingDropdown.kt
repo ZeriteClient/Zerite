@@ -3,11 +3,7 @@ package cc.zerite.client.game.gui.settings.tab
 import cc.zerite.client.game.gui.settings.element.SettingsElement
 import cc.zerite.client.game.tools.font.ZeriteFonts
 import cc.zerite.client.util.rendering.RenderDimension
-import cc.zerite.client.util.rendering.ShapeUtil
-import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.Tessellator
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import java.awt.Color
+import com.github.fcannizzaro.material.Colors
 import kotlin.math.max
 
 class SettingDropdown(val name: String) {
@@ -18,31 +14,16 @@ class SettingDropdown(val name: String) {
     fun draw() {
         val mediumSmallFont = ZeriteFonts.mediumSmall
 
-        ShapeUtil.drawRectWithSize(dimension.x, dimension.y, dimension.width, 20, Color(255, 255, 255, 50).rgb)
+        mediumSmallFont.drawString(
+            name.toUpperCase(),
+            dimension.x + 5,
+            dimension.y + 5,
+            Colors.blue_grey_700.asColor().rgb
+        )
 
-        val tessellator = Tessellator.getInstance()
-        val worldRenderer = tessellator.worldRenderer
-
-        GlStateManager.enableBlend()
-        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1)
-        GlStateManager.disableAlpha()
-        GlStateManager.shadeModel(7425)
-        GlStateManager.disableTexture2D()
-
-        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR)
-        worldRenderer.pos(dimension.x.toDouble(), dimension.y + 20.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 30).endVertex()
-        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 20.0, 0.0).tex(0.0, 0.0)
-            .color(0, 0, 0, 30).endVertex()
-        worldRenderer.pos(dimension.x.toDouble() + dimension.width.toDouble(), dimension.y + 23.0, 0.0).tex(0.0, 0.0)
-            .color(0, 0, 0, 0).endVertex()
-        worldRenderer.pos(dimension.x.toDouble(), dimension.y + 23.0, 0.0).tex(0.0, 0.0).color(0, 0, 0, 0).endVertex()
-        tessellator.draw()
-
-        mediumSmallFont.drawString(name, dimension.x + 5, dimension.y + 5, -0x1)
-
-        var xPos = dimension.x + 5
-        var yPos = dimension.y + 22
-        val itemWidth = dimension.width / 2 - 10
+        var xPos = dimension.x + 10
+        var yPos = dimension.y + 16
+        val itemWidth = dimension.width / 2 - 20
 
         var lastHeight = 0
 
@@ -58,10 +39,10 @@ class SettingDropdown(val name: String) {
                 lastHeight = element.dimensions.height
             }
 
-            xPos += itemWidth + 10
+            xPos += itemWidth + 20
 
             if (i % 2 == 1) {
-                xPos = dimension.x + 5
+                xPos = dimension.x + 10
                 yPos += max(lastHeight, element.dimensions.height) + 5
             }
         }

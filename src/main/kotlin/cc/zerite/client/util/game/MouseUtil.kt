@@ -8,7 +8,7 @@ import java.awt.Rectangle
 
 object MouseUtil {
 
-    private val mousePosition: Point
+    val mousePosition: Point
         get() {
             val scaledResolution = ResolutionUtil.scaledResolution
             val width = Mouse.getEventX() * scaledResolution.scaledWidth / Minecraft
