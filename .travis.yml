@@ -3,7 +3,7 @@ jdk: openjdk8
 install:
   - 'chmod +x ./gradlew'
 script:
-  - 'bash gradlew changeMcVersion setupCiWorkspace build shadowJar'
+  - 'bash gradlew changeMcVersion setupCiWorkspace build'
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
