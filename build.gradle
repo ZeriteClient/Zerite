@@ -61,10 +61,6 @@ repositories {
 }
 
 dependencies {
-    embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    embed 'org.jetbrains.kotlin:kotlin-reflect'
-    embed group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.3.0-M1'
-
     embed "com.github.zerite:utils:9ed8a07484"
     embed('com.github.Zerite:Installer:47b4ff5ba0') {
         exclude module: 'kotlin-reflect'
@@ -73,7 +69,15 @@ dependencies {
     }
 
     if (System.env["JITPACK"] == null) {
+        embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+        embed 'org.jetbrains.kotlin:kotlin-reflect'
+        embed group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.3.0-M1'
+
         embed group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
+    } else {
+        compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+        compile 'org.jetbrains.kotlin:kotlin-reflect'
+        compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.3.0-M1'
     }
 
     embed 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
