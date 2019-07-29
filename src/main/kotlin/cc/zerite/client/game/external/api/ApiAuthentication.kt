@@ -4,6 +4,7 @@ import cc.zerite.client.event.ClientShutdownEvent
 import cc.zerite.client.event.ClientStartEvent
 import cc.zerite.client.event.Subscribe
 import cc.zerite.client.injection.bootstrap.impl.annotations.Instance
+import cc.zerite.client.util.ext.urlEncoded
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.GlobalScope
@@ -16,7 +17,6 @@ import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.util.EntityUtils
 import org.apache.logging.log4j.LogManager
-import tornadofx.urlEncoded
 
 @Instance(registerEvents = true)
 object ApiAuthentication {
@@ -44,8 +44,8 @@ object ApiAuthentication {
             val username = session.username
             val uuid = session.playerID
 
-            val encodedUsername = username.urlEncoded
-            val encodedUuid = uuid.urlEncoded
+            val encodedUsername = username.urlEncoded()
+            val encodedUuid = uuid.urlEncoded()
 
             val gson = Gson()
 
@@ -91,7 +91,7 @@ object ApiAuthentication {
             logger.info("Success, sending post-auth request...")
 
             val postRequest =
-                HttpGet("$postAuthUrl?username=$encodedUsername&uuid=$encodedUuid&serverId=${serverId.urlEncoded}")
+                HttpGet("$postAuthUrl?username=$encodedUsername&uuid=$encodedUuid&serverId=${serverId.urlEncoded()}")
             val postResponse = httpClient.execute(postRequest)
 
             val postJson = gson.fromJson(
@@ -118,9 +118,9 @@ object ApiAuthentication {
             val username = session.username
             val uuid = session.playerID
 
-            val encodedUsername = username.urlEncoded
-            val encodedUuid = uuid.urlEncoded
-            val encodedAccessToken = accessToken.urlEncoded
+            val encodedUsername = username.urlEncoded()
+            val encodedUuid = uuid.urlEncoded()
+            val encodedAccessToken = accessToken.urlEncoded()
 
             val gson = Gson()
 
