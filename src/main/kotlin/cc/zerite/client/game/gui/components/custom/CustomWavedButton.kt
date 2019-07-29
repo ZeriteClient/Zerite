@@ -15,13 +15,18 @@ import kotlin.math.max
 import kotlin.math.min
 
 class CustomWavedButton(
-    var label: String
+    var label: String,
+    private val smallFont: Boolean = false,
+    private val border: Boolean = true,
+    private val radius: Int = 3,
+    private val alignPadding: Int = 0,
+    private val clicked: () -> Unit = {}
 ) {
 
     private var dimension = RenderDimension(0, 0, 0, 0)
     private val waveData = arrayListOf<WaveData>()
+    private var hoverFade = 0.0
 
-    var hoverFade = 0.0
     var enabled = true
 
     fun drawButton(xPosition: Int, yPosition: Int, width: Int, height: Int) {
@@ -37,23 +42,26 @@ class CustomWavedButton(
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0)
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
 
-        ShapeUtil.drawFilledRoundedRectangle(
-            xPosition, yPosition, width, height, 3,
-            if (!this.enabled)
-                Color(0, 0, 0, 100).rgb
-            else
-                Color(255, 255, 255, hoverFade.toInt() / 2).rgb
-        )
-        ShapeUtil.drawRoundedRectangle(
-            xPosition, yPosition, width, height, 3, 2f,
-            if (!this.enabled)
-                Color(0, 0, 0, 100).rgb
-            else
-                Color(255, 255, 255, hoverFade.toInt()).rgb
-        )
+        if (border) {
+            ShapeUtil.drawFilledRoundedRectangle(
+                xPosition, yPosition, width, height, radius,
+                if (!this.enabled)
+                    Color(0, 0, 0, 100).rgb
+                else
+                    Color(255, 255, 255, hoverFade.toInt() / 2).rgb
+            )
+
+            ShapeUtil.drawRoundedRectangle(
+                xPosition, yPosition, width, height, radius, 2f,
+                if (!this.enabled)
+                    Color(0, 0, 0, 100).rgb
+                else
+                    Color(255, 255, 255, hoverFade.toInt()).rgb
+            )
+        }
 
         GLUtil.preStencil()
-        ShapeUtil.drawFilledRoundedRectangle(xPosition, yPosition, width, height, 3, -0x1)
+        ShapeUtil.drawFilledRoundedRectangle(xPosition, yPosition, width, height, radius, -0x1)
         GLUtil.postStencil()
 
         waveData.removeIf { data ->
@@ -76,18 +84,30 @@ class CustomWavedButton(
         GLUtil.postStencilDraw()
 
         GL11.glColor4f(1f, 1f, 1f, 1f)
-        ZeriteFonts.medium
-            .drawCenteredString(
+
+        val font = if (smallFont) ZeriteFonts.mediumSmall else ZeriteFonts.medium
+
+        if (alignPadding == 0) {
+            font.drawCenteredString(
                 label.toUpperCase(),
-                xPosition + width / 2, yPosition + (height - ZeriteFonts.medium
-                    .getHeight(label.toUpperCase())) / 2,
+                xPosition + width / 2,
+                yPosition + (height - font.getHeight(label.toUpperCase())) / 2,
                 Color(-0x1).rgb
             )
+        } else {
+            font.drawString(
+                label.toUpperCase(),
+                xPosition + alignPadding,
+                yPosition + (height - font.getHeight(label.toUpperCase())) / 2,
+                Color(-0x1).rgb
+            )
+        }
     }
 
     fun mousePressed(mouseX: Int, mouseY: Int) {
         if (MouseUtil.isHovered(dimension.x, dimension.y, dimension.width, dimension.height)) {
             waveData += WaveData(mouseX, mouseY, System.currentTimeMillis())
+            clicked()
         }
     }
 

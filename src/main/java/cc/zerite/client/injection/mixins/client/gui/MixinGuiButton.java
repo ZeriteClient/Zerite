@@ -37,7 +37,7 @@ public abstract class MixinGuiButton extends Gui {
     @Shadow
     public boolean enabled;
 
-    private CustomWavedButton customButton = new CustomWavedButton("");
+    private CustomWavedButton customButton = new CustomWavedButton("", false, true, 3, 0, () -> null);
 
     /**
      * @author Koding

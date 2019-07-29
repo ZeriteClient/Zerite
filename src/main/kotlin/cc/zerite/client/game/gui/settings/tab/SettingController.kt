@@ -2,27 +2,31 @@ package cc.zerite.client.game.gui.settings.tab
 
 import cc.zerite.client.game.gui.components.custom.CustomWavedButton
 import cc.zerite.client.game.tools.font.ZeriteFonts
-import cc.zerite.client.util.game.MouseUtil
-import cc.zerite.client.util.rendering.ResolutionUtil
+import cc.zerite.client.util.rendering.RenderDimension
 import cc.zerite.client.util.rendering.ShapeUtil
 import cc.zerite.client.util.rendering.usingStencil
-import com.github.fcannizzaro.material.Colors
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.renderer.GlStateManager
 import java.awt.Color
-import kotlin.math.max
 
 class SettingController(private val groups: ArrayList<SettingGroup>) {
 
     private var currentGroup: SettingGroup? = null
     private var scrollProgress = 0
     private val headerButtons = arrayListOf(
-        CustomWavedButton("GENERAL"),
-        CustomWavedButton("COSMETICS"),
-        CustomWavedButton("OTHER")
+        CustomWavedButton("GENERAL", smallFont = true, border = false),
+        CustomWavedButton("COSMETICS", smallFont = true, border = false),
+        CustomWavedButton("OTHER", smallFont = true, border = false)
     )
 
+    private val wavedButtons = arrayListOf<CustomWavedButton>()
+
     fun draw() {
+        if (currentGroup == null) {
+            currentGroup = groups[0]
+        }
+
         val sr = ScaledResolution(Minecraft.getMinecraft())
         val width = sr.scaledWidth
         val height = sr.scaledHeight
@@ -33,158 +37,145 @@ class SettingController(private val groups: ArrayList<SettingGroup>) {
 
         titleFont.drawCenteredString("Zerite", width / 2, height / 12, -0xF)
 
-        val left = width / 6
-        val top = height / 5
-        val bWidth = width / 3 * 2
+        val left = width / 8
+        val top = height / 4
+        val bWidth = width / 4 * 3
         val bHeight = height / 3 * 2
-        val topHeight = 20
-
-        ShapeUtil.drawRoundedRectangle(left, top, bWidth, bHeight, 5, 1.0f, -0xF)
-        ShapeUtil.drawLine(left + width / 4, top, left + width / 4, top + bHeight, Colors.grey_600.asColor().rgb)
+        val topHeight = 30
+        val sideWidth = bWidth / 3
+        val profileHeight = 20
 
         usingStencil {
             stencil = {
-                ShapeUtil.drawFilledRoundedRectangle(left, top, 15, bHeight, 5, -0x0)
-                ShapeUtil.drawRectWithSize(left + 10, top, width / 3 - 10, bHeight, -0x0)
+                ShapeUtil.drawFilledRoundedRectangle(left, top, bWidth, topHeight, 3, -0xF)
+                ShapeUtil.drawRectWithSize(left, top + 5, bWidth, topHeight - 5, -0xF)
             }
 
             scene = {
-                ShapeUtil.drawRectWithSize(left, top + topHeight, width / 4, bHeight - topHeight, Color(100, 100, 100, 100).rgb)
-                ShapeUtil.drawRectWithSize(left, top, width / 4, topHeight, Color(150, 150, 150, 100).rgb)
+                ShapeUtil.drawRectWithSize(left, top, bWidth, topHeight, Color(55, 71, 79, 255).rgb)
 
-                ShapeUtil.drawLine(left, top + topHeight, left + width / 4, top + topHeight, Colors.grey_600.asColor().rgb)
+                val buttonWidth = 50
+                val buttonHeight = 20
+                for (i in headerButtons.indices) {
+                    val button = headerButtons[i]
+                    button.drawButton(
+                        left + 5 + i * (buttonWidth + 5),
+                        top + buttonHeight / 4,
+                        buttonWidth,
+                        buttonHeight
+                    )
+                }
+            }
+        }
 
-                mediumSmallFont.drawString("PROFILE", left + 6, top + (topHeight - mediumSmallFont.getHeight("PROFILE")) / 2, -0xF)
+        usingStencil {
+            stencil = {
+                ShapeUtil.drawRectWithSize(left, top + topHeight, sideWidth, profileHeight, -0xF)
+            }
 
+            scene = {
+                ShapeUtil.drawRectWithSize(left, top + topHeight, sideWidth, profileHeight, Color(69, 90, 100, 255).rgb)
+
+                mediumSmallFont.drawString("PROFILE", left + 5, top + topHeight + 5, -0xF)
+            }
+        }
+
+        usingStencil {
+            stencil = {
+                ShapeUtil.drawFilledRoundedRectangle(
+                    left,
+                    top + topHeight + profileHeight,
+                    sideWidth,
+                    bHeight - topHeight - profileHeight,
+                    3,
+                    -0xF
+                )
+                ShapeUtil.drawRectWithSize(left, top + topHeight + profileHeight, 10, 10, -0xF)
+                ShapeUtil.drawRectWithSize(
+                    left + sideWidth - 10,
+                    top + topHeight + profileHeight,
+                    10,
+                    bHeight - topHeight - profileHeight,
+                    -0xF
+                )
+            }
+
+            scene = {
+                ShapeUtil.drawRectWithSize(
+                    left,
+                    top + topHeight + profileHeight,
+                    sideWidth,
+                    bHeight - topHeight - profileHeight,
+                    Color(55, 71, 79, 255).rgb
+                )
+
+                val textHeight = 10
                 for (i in groups.indices) {
                     val group = groups[i]
+                    val y = top + topHeight + profileHeight + 5 + i * textHeight
 
-                    val gLeft = left + 6
-                    val gTop = top + topHeight + 6 + i * 10
+                    val button = wavedButtons.firstOrNull { it.label == group.name }.let {
+                        val button = it ?: CustomWavedButton(
+                            group.name,
+                            smallFont = true,
+                            border = false,
+                            radius = 0,
+                            alignPadding = 5,
+                            clicked = {
+                                currentGroup = group
+                            }
+                        )
+                        if (it == null) {
+                            wavedButtons += button
+                        }
+                        button
+                    }
 
-                    mediumSmallFont.drawString(group.name.toUpperCase(), gLeft, gTop, Color.WHITE.rgb)
+                    button.drawButton(left, y, sideWidth, textHeight)
                 }
             }
         }
 
         usingStencil {
             stencil = {
-                ShapeUtil.drawFilledRoundedRectangle(left + width / 2, top, 15, bHeight, 5, -0x0)
-                ShapeUtil.drawRectWithSize(left + width / 6, top, width / 2 - 10, bHeight, -0x0)
+                ShapeUtil.drawFilledRoundedRectangle(
+                    left + sideWidth,
+                    top + topHeight,
+                    bWidth - sideWidth,
+                    bHeight - topHeight,
+                    3,
+                    -0xF
+                )
+                ShapeUtil.drawRectWithSize(left + sideWidth, top + topHeight, bWidth - sideWidth, 10, -0xF)
+                ShapeUtil.drawRectWithSize(left + sideWidth, top + topHeight, 10, bHeight - topHeight, -0xF)
             }
 
             scene = {
-                ShapeUtil.drawRectWithSize(left + width / 4, top + topHeight, width / 2, bHeight - topHeight, Color(100, 100, 100, 100).rgb)
-                ShapeUtil.drawRectWithSize(left + width / 4, top, width / 2, topHeight, Color(150, 150, 150, 100).rgb)
+                ShapeUtil.drawRectWithSize(
+                    left + sideWidth,
+                    top + topHeight,
+                    bWidth - sideWidth,
+                    bHeight - topHeight,
+                    Color(38, 50, 56, 255).rgb
+                )
 
-                headerButtons.forEachIndexed { index, it ->
-                    val x = left + width / 2 + 6 + index * 40
-                    val y = top + (topHeight + 10) / 2
-
-                    it.drawButton(x, y + 5, 30, 10)
-                }
+                currentGroup?.dimension =
+                    RenderDimension(bWidth - sideWidth, bHeight - topHeight, left + sideWidth, top + topHeight)
+                currentGroup?.draw()
             }
         }
 
-//        val rectX = width / 4 + 20.0
-//        val rectY = 20.0
-//        val rectWidth = width / 4 * 3 - 40.0
-//        val rectHeight = height - 50.0
-//
-//        if (currentGroup == null) {
-//            usingStencil {
-//                stencil = {
-//                    ShapeUtil.drawFilledRoundedRectangle(
-//                        rectX.toInt(),
-//                        rectY.toInt(),
-//                        rectWidth.toInt(),
-//                        rectHeight.toInt(),
-//                        5,
-//                        -0x1
-//                    )
-//                }
-//
-//                scene = {
-//                    ShapeUtil.drawGradientRect(
-//                        rectX,
-//                        rectY,
-//                        rectWidth,
-//                        rectHeight,
-//                        Color(3, 169, 244, 100).rgb,
-//                        Color(2, 136, 209, 255).rgb
-//                    )
-//
-//                    titleFont.drawCenteredString(
-//                        "Well this is awkward!",
-//                        (rectX + rectWidth / 2).toInt(),
-//                        (rectY + rectHeight / 2 - 20).toInt(),
-//                        -0x1
-//                    )
-//                    mediumFont.drawCenteredString(
-//                        "You haven't selected a category.",
-//                        (rectX + rectWidth / 2).toInt(),
-//                        (rectY + rectHeight / 2 + 10).toInt(),
-//                        -0x1
-//                    )
-//                }
-//            }
-//        } else {
-//            currentGroup!!.dimension = RenderDimension(rectWidth.toInt(), (rectHeight + 20).toInt(), rectX.toInt(), 0)
-//            currentGroup!!.draw()
-//        }
+        ShapeUtil.drawRoundedRectangle(left, top, bWidth, bHeight, 3, 1.0f, -0xF)
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
     }
 
     fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
         headerButtons.forEach { it.mousePressed(mouseX, mouseY) }
-
-        val sr = ScaledResolution(Minecraft.getMinecraft())
-        val width = sr.scaledWidth
-
-        val radius = width / 32
-        val spacing = radius * 3 - radius / 2
-        var x = radius / 2
-        var y = 30 - scrollProgress
-
-        for (i in groups.indices) {
-            if (MouseUtil.isHovered(x, y, radius * 2, radius * 2)) {
-                currentGroup = groups[i]
-            }
-
-            x += spacing
-
-            if (i % 3 == 2) {
-                x = radius / 2
-                y += (spacing * 1.25).toInt()
-            }
-        }
-
+        wavedButtons.forEach { it.mousePressed(mouseX, mouseY) }
         currentGroup?.mouseClicked(mouseX, mouseY, mouseButton)
     }
 
     fun mouseScrolled(wheel: Int) {
-        val sr = ResolutionUtil.scaledResolution
-
-        if (MouseUtil.isHovered(0, 0, sr.scaledWidth / 4, sr.scaledHeight)) {
-            val radius = sr.scaledWidth / 32
-            val spacing = radius * 3 - radius / 2
-            var x = radius / 2
-            var y = 30 - scrollProgress - wheel / 8
-
-            for (i in groups.indices) {
-                x += spacing
-
-                if (i % 3 == 2) {
-                    x = radius / 2
-                    y += (spacing * 1.25).toInt()
-                }
-            }
-
-            if (y <= 30)
-                return
-
-            scrollProgress = max(0, scrollProgress + wheel / 8)
-        }
-
         currentGroup?.mouseScrolled(wheel)
     }
 

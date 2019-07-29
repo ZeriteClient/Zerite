@@ -5,6 +5,11 @@ import cc.zerite.client.game.tools.font.ZeriteFonts
 import cc.zerite.client.util.game.MouseUtil
 import cc.zerite.client.util.rendering.AnimationUtil
 import cc.zerite.client.util.rendering.ShapeUtil
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.Gui
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.GL11
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.min
@@ -25,30 +30,40 @@ class SettingsToggle(
     override fun draw() {
         animation = max(
             -50.0,
-            min(50.0, AnimationUtil.easeOut(lastAnimation, if (toggled) 50.0 else -50.0, lastChange, 1000.0))
+            min(50.0, AnimationUtil.easeOut(lastAnimation, if (toggled) 50.0 else -50.0, lastChange, 500.0))
         )
         animation = if (animation < 0) animation + 50 else animation
 
         dimensions.height = 15
 
         val mediumSmallFont = ZeriteFonts.mediumSmall
-        mediumSmallFont.drawString(label, dimensions.x, dimensions.y + 3, -0x1)
+        mediumSmallFont.drawString(label.toUpperCase(), dimensions.x, dimensions.y + 3, -0x1)
+
+        val x = dimensions.x + mediumSmallFont.getWidth(label.toUpperCase()) + 10
+        val y = dimensions.y + dimensions.height / 4
+        val height = dimensions.height / 4 * 3
+
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
+
+        Minecraft.getMinecraft().textureManager.bindTexture(ResourceLocation("textures/icons/close.png"))
+        Gui.drawModalRectWithCustomSizedTexture(x, y, 0.0f, 0.0f, height, height, height.toFloat(), height.toFloat())
+
+        ShapeUtil.drawRoundedRectangle(x, y, height, height, 3, 2f, Color.WHITE.rgb)
 
         ShapeUtil.drawFilledRoundedRectangle(
-            dimensions.x + dimensions.width - 25,
-            dimensions.y + 4,
-            15,
-            6,
+            x,
+            y,
+            height,
+            height,
             3,
-            -0x1
+            Color(3, 155, 229, (animation / 50 * 255).toInt()).rgb
         )
-        ShapeUtil.drawFilledCircle(
-            (dimensions.x + dimensions.width - 32 + ((animation + 50) / 100) * 20).toInt(),
-            dimensions.y + dimensions.height / 2,
-            5,
-            50,
-            Color.getHSBColor(((animation + 50.0f) / 100.0f * 0.35f - 0.13f).toFloat(), 0.8f, 0.8f).rgb
-        )
+
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, (animation / 50.0f).toFloat())
+        Minecraft.getMinecraft().textureManager.bindTexture(ResourceLocation("textures/icons/check.png"))
+        Gui.drawModalRectWithCustomSizedTexture(x, y, 0.0f, 0.0f, height, height, height.toFloat(), height.toFloat())
+
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
     }
 
     /**

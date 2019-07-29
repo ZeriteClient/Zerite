@@ -1,6 +1,8 @@
 package cc.zerite.client.game.gui.settings
 
+import cc.zerite.client.game.gui.settings.element.impl.SettingsToggle
 import cc.zerite.client.game.gui.settings.tab.SettingController
+import cc.zerite.client.game.gui.settings.tab.SettingDropdown
 import cc.zerite.client.game.gui.settings.tab.SettingGroup
 import cc.zerite.client.util.EnumBackground
 import net.minecraft.client.Minecraft
@@ -24,6 +26,19 @@ object GuiZeriteSettings : GuiScreen() {
     private var controller: SettingController
 
     init {
+        groups.forEach {
+            for (i in 0..15) {
+                val dd = SettingDropdown("Example")
+
+                for (j in 0..15) {
+                    dd.elements.add(
+                        SettingsToggle("Test", onChange = {})
+                    )
+                }
+
+                it.value.dropDowns.add(dd)
+            }
+        }
         controller = SettingController(ArrayList(groups.values))
     }
 
