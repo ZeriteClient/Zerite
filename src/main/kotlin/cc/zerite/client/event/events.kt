@@ -35,3 +35,5 @@ class PlayerInitEvent(
     val world: World,
     val playerProfile: GameProfile
 ) : Event()
+class ConnectToServerEvent(val ip: String, val port: Int) : Event()
+class DisconnectFromServerEvent : Event()
