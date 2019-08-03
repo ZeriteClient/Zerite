@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class Multithreading {
     companion object {
-        private val POOL: ExecutorService = Executors.newFixedThreadPool(100, object : ThreadFactory {
+        val POOL: ExecutorService = Executors.newFixedThreadPool(100, object : ThreadFactory {
             val counter = AtomicInteger(0)
 
             override fun newThread(r: Runnable): Thread {
