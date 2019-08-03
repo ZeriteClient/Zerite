@@ -26,19 +26,6 @@ object GuiZeriteSettings : GuiScreen() {
     private var controller: SettingController
 
     init {
-        groups.forEach {
-            for (i in 0..15) {
-                val dd = SettingDropdown("Example")
-
-                for (j in 0..15) {
-                    dd.elements.add(
-                        SettingsToggle("Test", onChange = {})
-                    )
-                }
-
-                it.value.dropDowns.add(dd)
-            }
-        }
         controller = SettingController(ArrayList(groups.values))
     }
 

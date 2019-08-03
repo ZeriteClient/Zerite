@@ -63,7 +63,7 @@ repositories {
 dependencies {
     embed "com.github.zerite:utils:9ed8a07484"
 
-    embed('com.github.Zerite:Installer:47b4ff5ba0') {
+    embed('com.github.Zerite:Installer:master-SNAPSHOT') {
         exclude module: 'kotlin-reflect'
         exclude module: 'gson'
         exclude module: 'javax.json'
