@@ -21,8 +21,6 @@ class SettingGroup(val name: String, val icon: ResourceLocation) {
         scrollProgress = max(0, (scrollProgress + if (!scrollingUp) scrollVelocity else -scrollVelocity).toInt())
         scrollVelocity = max(0.0, scrollVelocity - TimeUtil.delta / 10.0)
 
-        println(scrollVelocity)
-
         var yPos = dimension.y - scrollProgress
 
         for (dropdown in dropDowns) {

@@ -34,7 +34,7 @@ import kotlin.collections.HashMap
 @Instance(registerEvents = true)
 object CosmeticHandler {
 
-    var locations = arrayListOf<ResourceLocation>()
+    private var locations = arrayListOf<ResourceLocation>()
     private var tickCounter: Int = 0
 
     @Subscribe

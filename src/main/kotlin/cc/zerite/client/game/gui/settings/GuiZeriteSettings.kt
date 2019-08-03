@@ -1,8 +1,6 @@
 package cc.zerite.client.game.gui.settings
 
-import cc.zerite.client.game.gui.settings.element.impl.SettingsToggle
 import cc.zerite.client.game.gui.settings.tab.SettingController
-import cc.zerite.client.game.gui.settings.tab.SettingDropdown
 import cc.zerite.client.game.gui.settings.tab.SettingGroup
 import cc.zerite.client.util.EnumBackground
 import net.minecraft.client.Minecraft
