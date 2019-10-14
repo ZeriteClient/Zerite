@@ -1,6 +1,8 @@
 package cc.zerite.client.game.tools.font
 
 import cc.zerite.client.util.rendering.ColorUtil
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumChatFormatting
 import org.lwjgl.opengl.GL11
@@ -11,9 +13,11 @@ import java.awt.Font
 import java.util.*
 
 
-class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasingFactor: Int) {
+class ZeriteFontRenderer(private val fontImpl: Font, val size: Float, private var antiAliasingFactor: Int) {
 
-    private var font: UnicodeFont = UnicodeFont(fontImpl.deriveFont(size * antiAliasingFactor))
+    //    private var font: UnicodeFont = UnicodeFont(fontImpl.deriveFont(size * antiAliasingFactor))
+    private var prevScaleFactor: Int = ScaledResolution(Minecraft.getMinecraft()).scaleFactor
+    private var font: UnicodeFont = UnicodeFont(fontImpl.deriveFont(size * prevScaleFactor / 2))
     private var colorCodes: IntArray
 
     init {
@@ -39,6 +43,17 @@ class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasi
 
     fun drawString(text: String, x: Int, y: Int, color: Int, shadow: Boolean, chroma: Boolean = false) {
         val textureEnabled = GL11.glIsEnabled(GL11.GL_TEXTURE_2D)
+        val resolution = ScaledResolution(Minecraft.getMinecraft())
+
+        if (resolution.scaleFactor != prevScaleFactor) {
+            prevScaleFactor = resolution.scaleFactor
+            font = UnicodeFont(fontImpl.deriveFont(size * prevScaleFactor / 2))
+            font.addAsciiGlyphs()
+            font.effects.add(ColorEffect(Color.WHITE))
+            font.loadGlyphs()
+        }
+
+        antiAliasingFactor = resolution.scaleFactor
 
         val posX: Float = (x * antiAliasingFactor).toFloat()
         val posY: Float = (y * antiAliasingFactor).toFloat()
@@ -52,6 +67,7 @@ class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasi
 
         GL11.glColor4f(red, green, blue, alpha)
 
+//        GlStateManager.scale(1f / , 1f / resolution.scaleFactor, 1f / resolution.scaleFactor)
         GlStateManager
             .scale(1f / antiAliasingFactor, 1f / antiAliasingFactor, 1f / antiAliasingFactor)
 
@@ -122,6 +138,8 @@ class ZeriteFontRenderer(fontImpl: Font, val size: Float, private val antiAliasi
             antiAliasingFactor.toDouble(),
             antiAliasingFactor.toDouble()
         )
+//        GlStateManager.scale(resolution.scaleFactor.toDouble(), resolution.scaleFactor.toDouble(), resolution.scaleFactor.toDouble())
+
         GL11.glColor4f(1f, 1f, 1f, 1f)
 
         GlStateManager.bindTexture(0)

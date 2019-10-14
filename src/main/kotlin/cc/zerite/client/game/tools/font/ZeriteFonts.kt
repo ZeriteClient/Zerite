@@ -10,37 +10,37 @@ object ZeriteFonts {
         Font.createFont(
             Font.TRUETYPE_FONT,
             javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Regular.ttf")
-        ), 10f, 2
+        ), 20f, 2
     )
     val medium = ZeriteFontRenderer(
         Font.createFont(
             Font.TRUETYPE_FONT,
             javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Medium.ttf")
-        ), 10f, 2
+        ), 20f, 2
     )
     val mediumSmall = ZeriteFontRenderer(
         Font.createFont(
             Font.TRUETYPE_FONT,
             javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Medium.ttf")
-        ), 8f, 2
+        ), 16f, 2
     )
     val bold = ZeriteFontRenderer(
         Font.createFont(
             Font.TRUETYPE_FONT,
             javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Bold.ttf")
-        ), 10f, 2
+        ), 20f, 2
     )
     val title = ZeriteFontRenderer(
         Font.createFont(
             Font.TRUETYPE_FONT,
             javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Bold.ttf")
-        ), 24f, 2
+        ), 48f, 2
     )
     val titleLarge = ZeriteFontRenderer(
         Font.createFont(
             Font.TRUETYPE_FONT,
             javaClass.getResourceAsStream("/assets/zerite/fonts/Roboto-Bold.ttf")
-        ), 42f, 2
+        ), 84f, 2
     )
 
 }
