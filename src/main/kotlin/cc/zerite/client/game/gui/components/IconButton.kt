@@ -37,8 +37,8 @@ class IconButton(
         // GL options
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
         GlStateManager.enableBlend()
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
-        GlStateManager.blendFunc(770, 771)
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
 
         // Set hovered
         this.hovered = (mouseX >= this.xPosition && mouseY >= this.yPosition

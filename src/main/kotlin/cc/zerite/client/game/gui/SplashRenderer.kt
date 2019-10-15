@@ -9,6 +9,7 @@ import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.texture.TextureManager
 import net.minecraft.client.shader.Framebuffer
+import org.lwjgl.opengl.GL11
 import java.awt.Color
 import kotlin.math.max
 
@@ -42,13 +43,13 @@ object SplashRenderer {
             framebuffer.bindFramebuffer(false)
 
             // GL options
-            GlStateManager.matrixMode(5889)
+            GlStateManager.matrixMode(GL11.GL_PROJECTION)
             GlStateManager.loadIdentity()
             GlStateManager.ortho(
                 0.0, scaledResolution.scaledWidth.toDouble(),
                 scaledResolution.scaledHeight.toDouble(), 0.0, 1000.0, 3000.0
             )
-            GlStateManager.matrixMode(5888)
+            GlStateManager.matrixMode(GL11.GL_MODELVIEW)
             GlStateManager.loadIdentity()
             GlStateManager.translate(0.0f, 0.0f, -2000.0f)
         }
@@ -150,7 +151,7 @@ object SplashRenderer {
 
         // GL options
         GlStateManager.enableAlpha()
-        GlStateManager.alphaFunc(516, 0.1f)
+        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f)
     }
 
     fun updateData(text: String) {

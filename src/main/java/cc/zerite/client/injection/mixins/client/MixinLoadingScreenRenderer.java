@@ -31,20 +31,20 @@ public class MixinLoadingScreenRenderer {
     public void setLoadingProgress(int progress) {
         long nanoTime = Minecraft.getSystemTime();
 
-        if (nanoTime - this.systemTime >= 100L) {
-            this.systemTime = nanoTime;
-            ScaledResolution scaledresolution = new ScaledResolution(this.mc);
+        if (nanoTime - systemTime >= 100L) {
+            systemTime = nanoTime;
+            ScaledResolution scaledresolution = new ScaledResolution(mc);
             int scaleFactor = scaledresolution.getScaleFactor();
             int scaledWidth = scaledresolution.getScaledWidth();
             int scaledHeight = scaledresolution.getScaledHeight();
 
             if (OpenGlHelper.isFramebufferEnabled()) {
-                this.framebuffer.framebufferClear();
+                framebuffer.framebufferClear();
             } else {
                 GlStateManager.clear(GL11.GL_ACCUM);
             }
 
-            this.framebuffer.bindFramebuffer(false);
+            framebuffer.bindFramebuffer(false);
             GlStateManager.matrixMode(GL11.GL_PROJECTION);
             GlStateManager.loadIdentity();
             GlStateManager.ortho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 100.0D, 300.0D);
@@ -66,7 +66,7 @@ public class MixinLoadingScreenRenderer {
                 int barWidth = scaledWidth / 2 - maxLoadingProgress / 2;
                 int barHeight = scaledHeight / 2 + 16;
                 GlStateManager.disableTexture2D();
-                worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
                 worldrenderer.pos(barWidth, barHeight, 0.0D).color(128, 128, 128, 255).endVertex();
                 worldrenderer.pos(barWidth, barHeight + barTop, 0.0D).color(128, 128, 128, 255).endVertex();
                 worldrenderer.pos(barWidth + maxLoadingProgress, barHeight + barTop, 0.0D).color(128, 128, 128, 255).endVertex();
@@ -81,15 +81,15 @@ public class MixinLoadingScreenRenderer {
 
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-            this.mc.fontRendererObj.drawStringWithShadow(this.currentlyDisplayedText, (float) ((scaledWidth - this.mc.fontRendererObj.getStringWidth(this.currentlyDisplayedText)) / 2), (float) (scaledHeight / 2 - 4 - 16), 16777215);
-            this.mc.fontRendererObj.drawStringWithShadow(this.message, (float) ((scaledWidth - this.mc.fontRendererObj.getStringWidth(this.message)) / 2), (float) (scaledHeight / 2 - 4 + 8), 16777215);
-            this.framebuffer.unbindFramebuffer();
+            mc.fontRendererObj.drawStringWithShadow(currentlyDisplayedText, (float) ((scaledWidth - mc.fontRendererObj.getStringWidth(currentlyDisplayedText)) / 2), (float) (scaledHeight / 2 - 4 - 16), 16777215);
+            mc.fontRendererObj.drawStringWithShadow(message, (float) ((scaledWidth - mc.fontRendererObj.getStringWidth(message)) / 2), (float) (scaledHeight / 2 - 4 + 8), 16777215);
+            framebuffer.unbindFramebuffer();
 
             if (OpenGlHelper.isFramebufferEnabled()) {
-                this.framebuffer.framebufferRender(scaledWidth * scaleFactor, scaledHeight * scaleFactor);
+                framebuffer.framebufferRender(scaledWidth * scaleFactor, scaledHeight * scaleFactor);
             }
 
-            this.mc.updateDisplay();
+            mc.updateDisplay();
 
             try {
                 Thread.yield();

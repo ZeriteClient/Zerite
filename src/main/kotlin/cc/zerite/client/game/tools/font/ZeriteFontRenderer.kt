@@ -81,14 +81,14 @@ class ZeriteFontRenderer(private val fontImpl: Font, val size: Float, private va
         GlStateManager.disableTexture2D()
         GlStateManager.disableLighting()
         GlStateManager.enableBlend()
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
-        GlStateManager.blendFunc(770, 771)
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
 
         var currentX: Float = posX
         var currentY: Float = posY
         var currentColor = color
 
-        for (i in 0 until chars.size) {
+        for (i in chars.indices) {
             val c = chars[i]
 
             if (c == '\n') {

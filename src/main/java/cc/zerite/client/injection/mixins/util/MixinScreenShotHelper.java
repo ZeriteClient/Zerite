@@ -13,8 +13,6 @@ import java.io.File;
 @Mixin(ScreenShotHelper.class)
 public abstract class MixinScreenShotHelper {
 
-    private MixinScreenShotHelperImpl impl = new MixinScreenShotHelperImpl((ScreenShotHelper) (Object) this);
-
     /**
      * @author Koding
      */

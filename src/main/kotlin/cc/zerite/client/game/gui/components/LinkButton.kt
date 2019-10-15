@@ -38,13 +38,13 @@ class LinkButton(buttonId: Int, x: Int, y: Int, buttonText: String) :
         // GL options
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
         GlStateManager.enableBlend()
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
-        GlStateManager.blendFunc(770, 771)
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
 
         // Set hovered
-        this.hovered = (mouseX >= this.xPosition && mouseY >= this.yPosition
-                && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height)
-        this.mouseDragged(mc, mouseX, mouseY)
+        hovered =
+            (mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height)
+        mouseDragged(mc, mouseX, mouseY)
 
         // Draw string
         fontRenderer.drawString(displayString, xPosition, yPosition, -0x1)
@@ -52,7 +52,7 @@ class LinkButton(buttonId: Int, x: Int, y: Int, buttonText: String) :
         // Draw underline
         GL11.glLineWidth(2f)
         ShapeUtil.drawLine(
-            xPosition, yPosition + height + 2, xPosition + width, yPosition + height + 2,
+            xPosition, yPosition + height - 6, xPosition + width, yPosition + height - 6,
             Color(255, 255, 255, hoverFade.toInt()).rgb
         )
         GL11.glLineWidth(1f)
@@ -61,5 +61,4 @@ class LinkButton(buttonId: Int, x: Int, y: Int, buttonText: String) :
         GlStateManager.enableBlend()
         GL11.glColor4f(1f, 1f, 1f, 1f)
     }
-
 }

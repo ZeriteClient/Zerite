@@ -45,8 +45,8 @@ object ShapeUtil {
 //        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST)
 
         GlStateManager.enableBlend()
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
-        GlStateManager.blendFunc(770, 771)
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
         GL11.glDisable(GL11.GL_TEXTURE_2D)
     }
 
@@ -377,18 +377,18 @@ object ShapeUtil {
         GlStateManager.disableTexture2D()
         GlStateManager.enableBlend()
         GlStateManager.disableAlpha()
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
-        GlStateManager.shadeModel(7425)
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0)
+        GlStateManager.shadeModel(GL11.GL_SMOOTH)
         val tessellator = Tessellator.getInstance()
         val worldrenderer = tessellator.worldRenderer
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR)
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
         worldrenderer.pos(x + width, y, 0.0).color(f1, f2, f3, f).endVertex()
         worldrenderer.pos(x, y, 0.0).color((f1 + f5) / 2, (f2 + f6) / 2, (f3 + f6) / 2, (f + f4) / 2).endVertex()
         worldrenderer.pos(x, y + height, 0.0).color(f5, f6, f7, f4).endVertex()
         worldrenderer.pos(x + width, y + height, 0.0).color((f1 + f5) / 2, (f2 + f6) / 2, (f3 + f6) / 2, (f + f4) / 2)
             .endVertex()
         tessellator.draw()
-        GlStateManager.shadeModel(7424)
+        GlStateManager.shadeModel(GL11.GL_FLAT)
         GlStateManager.disableBlend()
         GlStateManager.enableAlpha()
         GlStateManager.enableTexture2D()

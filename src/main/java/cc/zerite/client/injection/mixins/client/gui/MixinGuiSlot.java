@@ -73,14 +73,14 @@ public abstract class MixinGuiSlot {
             GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
 
             GL11.glColorMask(false, false, false, false);
-            GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 255);
+            GL11.glStencilFunc(GL11.GL_ALWAYS, GL11.GL_ONE, 255);
             GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
 
             ShapeUtil.INSTANCE.drawRectWithSize(0, this.top, this.width, this.bottom - this.top, 0xFFFFFFFF);
 
             GL11.glColorMask(true, true, true, true);
             GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
-            GL11.glStencilFunc(GL11.GL_EQUAL, 1, 255);
+            GL11.glStencilFunc(GL11.GL_EQUAL, GL11.GL_ONE, 255);
 
             this.drawSelectionBox(k, l, mouseXIn, mouseYIn);
 
@@ -88,9 +88,9 @@ public abstract class MixinGuiSlot {
 
             GlStateManager.disableDepth();
             GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
+            GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ZERO, GL11.GL_ONE);
             GlStateManager.disableAlpha();
-            GlStateManager.shadeModel(7425);
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
             GlStateManager.disableTexture2D();
             int j1 = this.func_148135_f();
 
@@ -103,7 +103,7 @@ public abstract class MixinGuiSlot {
                     l1 = this.top;
                 }
 
-                worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
                 worldrenderer.pos(i, l1 + k1, 0.0D).color(255, 255, 255, 100).endVertex();
                 worldrenderer.pos(j, l1 + k1, 0.0D).color(255, 255, 255, 100).endVertex();
                 worldrenderer.pos(j, l1, 0.0D).color(255, 255, 255, 100).endVertex();
@@ -113,7 +113,7 @@ public abstract class MixinGuiSlot {
 
             this.func_148142_b(mouseXIn, mouseYIn);
             GlStateManager.enableTexture2D();
-            GlStateManager.shadeModel(7424);
+            GlStateManager.shadeModel(GL11.GL_FLAT);
             GlStateManager.enableAlpha();
             GlStateManager.disableBlend();
         }

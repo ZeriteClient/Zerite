@@ -38,8 +38,7 @@ object GuiUtil {
                 Color(2, 136, 209, 255).rgb
             )
         } else {
-            ShapeUtil.drawRect(0, 0, width, height, -1072689136)
+            ShapeUtil.drawGradientRect(0.0, 0.0, width.toDouble(), height.toDouble(), -1072689136, -804253680)
         }
     }
-
 }

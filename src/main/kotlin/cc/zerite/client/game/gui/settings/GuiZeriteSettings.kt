@@ -1,5 +1,6 @@
 package cc.zerite.client.game.gui.settings
 
+import cc.zerite.client.game.gui.components.IconButton
 import cc.zerite.client.game.gui.settings.tab.SettingController
 import cc.zerite.client.game.gui.settings.tab.SettingGroup
 import cc.zerite.client.util.EnumBackground
@@ -7,10 +8,9 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
-import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.util.ResourceLocation
 import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
-import java.io.IOException
 
 object GuiZeriteSettings : GuiScreen() {
 
@@ -37,14 +37,7 @@ object GuiZeriteSettings : GuiScreen() {
             groups.forEach { it.value.dropDowns.sortByDescending { v -> v.name } }
         }
 
-        val scaledResolution = ScaledResolution(Minecraft.getMinecraft())
-
-        this.buttonList.add(
-            GuiButton(
-                1, scaledResolution.scaledWidth - 105,
-                scaledResolution.scaledHeight - 25, 80, 20, "Back"
-            )
-        )
+        buttonList.add(IconButton(0, width - 22, 2, 20, 20, ResourceLocation("textures/icons/close.png")))
     }
 
     /**
@@ -55,24 +48,13 @@ object GuiZeriteSettings : GuiScreen() {
      * @param partialTicks the world tick
      */
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
+        drawDefaultBackground()
         if (Minecraft.getMinecraft().theWorld == null) {
             EnumBackground.BACKGROUND_1.bind()
             Gui.drawModalRectWithCustomSizedTexture(0, 0, 0.0f, 0.0f, width, height, width.toFloat(), height.toFloat())
-        } else {
-//            ShapeUtil.drawRectWithSize(0, 0, width, height, Color(0, 0, 0, 100).rgb)
         }
 
-//        ShapeUtil.drawGradientRect(
-//            0.0,
-//            0.0,
-//            width.toDouble(),
-//            height.toDouble(),
-//            Color(3, 169, 244, 20).rgb,
-//            Color(2, 136, 209, 130).rgb
-//        )
-
         controller.draw()
-
         super.drawScreen(mouseX, mouseY, partialTicks)
     }
 
@@ -100,18 +82,9 @@ object GuiZeriteSettings : GuiScreen() {
         super.mouseClicked(mouseX, mouseY, mouseButton)
     }
 
-    /**
-     * When the player clicks a button, what will it do
-     *
-     * @param button the button being clicked
-     * @throws IOException the exception that's thrown if something goes wrong
-     */
-    @Throws(IOException::class)
-    override fun actionPerformed(button: GuiButton) {
-        if (button.id == 1) {
-            Minecraft.getMinecraft().displayGuiScreen(null)
+    override fun actionPerformed(button: GuiButton?) {
+        if (button!!.id == 0) {
+            mc.displayGuiScreen(null)
         }
-        super.actionPerformed(button)
     }
-
 }
