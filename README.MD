@@ -15,4 +15,4 @@ It's mainly centred around PvP, however any cosmetic mods can easily be added on
 ### Developers
 **Koding**
 
-[![Koding](https://avatars0.githubusercontent.com/u/23714764?s=460&v=4)](https://github.com/KodingKing1)
+[![Koding](https://cdn.discordapp.com/avatars/341841981074309121/a_b79f3e62ebf8d5945442bb7d3ca6bd89.gif?size=256)](https://github.com/KodingKing1)
